@@ -1,1 +1,851 @@
-I2AhY2ZnKHRlc3QpXQovLyEgSW50ZWdyYXRpb24gdGVzdHMgZm9yIHRoZSBRdWVzdFJlZ2lzdHJ5IC0+IFJlcHV0YXRpb24gQ1JPU1MtQ09OVFJBQ1QgcGF0aCBwbHVzIHRoZQovLyEgYXR0ZXN0ZXIgZWQyNTUxOSBTSUdOQVRVUkUgZ2F0ZSAoYGF3YXJkX3F1ZXN0YCB2ZXJpZmllcyBhIHNpZ25lZCBwYXlsb2FkLCBub3QgYW4KLy8hIG9uLWNoYWluIGF0dGVzdGVyIGF1dGgpIGFuZCB0aGUgb24tY2hhaW4gYHJlY2lwaWVudC5yZXF1aXJlX2F1dGgoKWAgb3duZXJzaGlwIHByb29mLgpleHRlcm4gY3JhdGUgc3RkOwp1c2Ugc3VwZXI6Oio7CnVzZSBhbHZpbm11bmtfcmVwdXRhdGlvbjo6e1JlcHV0YXRpb25Db250cmFjdCwgUmVwdXRhdGlvbkNvbnRyYWN0Q2xpZW50fTsKdXNlIGVkMjU1MTlfZGFsZWs6OntTaWduZXIsIFNpZ25pbmdLZXl9Owp1c2UgcHJvcHRlc3Q6OnByZWx1ZGU6Oio7CnVzZSBzb3JvYmFuX3Nkazp7CiAgICB0ZXN0dXRpbHM6e3N0b3JhZ2U6OlBlcnNpc3RlbnQgYXB0XywgQWRkcmVzcyBhcyBfLCBMZWRnZXIgYXMgX30sCiAgICBCeXRlc04sIEVudiwKfTsKCnN0cnVjdCBGaXh0dXJlPCdhPiB7CiAgICBlbnY6IEVudiwKICAgIHJlcDogUmVwdXRhdGlvbkNvbnRyYWN0Q2xpZW50PCdhPiwKICAgIHF1ZXN0OiBRdWVzdFJlZ2lzdHJ5Q29udHJhY3RDbGllbnQ8J2E+LAogICAgYXR0ZXN0ZXJfc2s6IFNpZ25pbmdLZXksCiAgICBhdHRlc3Rlcl9wdWI6IEJ5dGVzTjwzMj4sCn0KCmZuIHNpZ25pbmdfa2V5KHNlZWQ6IHU4KSAtPiBTaWduaW5nS2V5IHsKICAgIFNpZ25pbmdLZXk6OmZyb21fYnl0ZXMoJltzZWVkOyAzMl0pCn0KCmZuIHNldHVwKCkgLT4gRml4dHVyZTwnc3RhdGljPiB7CiAgICBzZXR1cF9pbihFbnY6OmRlZmF1bHQoKSkKfQoKZm4gc2V0dXBfaW4oZW52OiBFbnYpIC0+IEZpeHR1cmU8J3N0YXRpYz4gewogICAgZW52Lm1vY2tfYWxsX2F1dGhzKCk7CiAgICBsZXQgYWRtaW4gPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZW52KTsKICAgIGxldCBhdHRlc3Rlcl9zayA9IHNpZ25pbmdfa2V5KDcpOwogICAgbGV0IGF0dGVzdGVyX3B1YiA9IEJ5dGVzTjo6ZnJvbV9hcnJheSgmZW52LCAmYXR0ZXN0ZXJfc2sudmVyaWZ5aW5nX2tleSgpLnRvX2J5dGVzKCkpOwoKICAgIGxldCByZXBfaWQgPSBlbnYucmVnaXN0ZXIoUmVwdXRhdGlvbkNvbnRyYWN0LCAoKSk7CiAgICBsZXQgcmVwID0gUmVwdXRhdGlvbkNvbnRyYWN0Q2xpZW50OjpuZXcoJmVudiwgJnJlcF9pZCk7CiAgICByZXAuaW5pdCgmYWRtaW4pOwoKICAgIGxldCBxdWVzdF9pZCA9IGVudi5yZWdpc3RlcihRdWVzdFJlZ2lzdHJ5Q29udHJhY3QsICgpKTsKICAgIGxldCBxdWVzdCA9IFF1ZXN0UmVnaXN0cnlDb250cmFjdENsaWVudDo6bmV3KCZlbnYsICZxdWVzdF9pZCk7CiAgICBxdWVzdC5pbml0KCZhZG1pbiwgJnJlcF9pZCk7CgogICAgLy8gV2lyZTogdGhlIFF1ZXN0UmVnaXN0cnkgQ09OVFJBQ1QgaXMgYW4gYWxsb3dsaXN0ZWQgYXR0ZXN0ZXIgaW4gUmVwdXRhdGlvbiAoZm9yIHRoZQogICAgLy8gYXdhcmRfeHAgY3Jvc3MtY2FsbCk7IHRoZSBvZmYtY2hhaW4gYXR0ZXN0ZXIgZWQyNTUxOSBQVUJLRVkgaXMgYWxsb3dsaXN0ZWQgaGVyZS4KICAgIHJlcC5hZGRfYXR0ZXN0ZXIoJnF1ZXN0X2lkKTsKICAgIHF1ZXN0LmFkZF9hdHRlc3Rlcl9rZXkoJmF0dGVzdGVyX3B1Yik7CgogICAgRml4dHVyZSB7CiAgICAgICAgZW52LAogICAgICAgIHJlcCwKICAgICAgICBxdWVzdCwKICAgICAgICBhdHRlc3Rlcl9zaywKICAgICAgICBhdHRlc3Rlcl9wdWIsCiAgICB9Cn0KCi8vLyBTaWduIHRoZSBjb250cmFjdCdzIGNhbm9uaWNhbCBwYXlsb2FkIHdpdGggYHNrYCBhbmQgYXdhcmQgdGhlIHF1ZXN0LgpmbiBhd2FyZChmOiAmRml4dHVyZSwgc2s6ICZTaWduaW5nS2V5LCBxdWVzdF9pZDogdTMyLCByZWNpcGllbnQ6ICZBZGRyZXNzKSB7CiAgICBsZXQgcHVia2V5ID0gQnl0ZXNOOjpmcm9tX2FycmF5KCZmLmVudiwgJnNrLnZlcmlmeWluZ19rZXkoKS50b19ieXRlcygpKTsKICAgIGxldCBwYXlsb2FkID0gZi5xdWVzdC5xdWVzdF9wYXlsb2FkKCZxdWVzdF9pZCwgcmVjaXBpZW50KTsKICAgIGxldCBtc2c6IHN0ZDo6dmVjOjpWZWM8dTg+ID0gcGF5bG9hZC5pdGVyKCkuY29sbGVjdCgpOwogICAgbGV0IHNpZyA9IEJ5dGVzTjo6ZnJvbV9hcnJheSgmZi5lbnYsICZzay5zaWduKCZtc2cpLnRvX2J5dGVzKCkpOwogICAgZi5xdWVzdC5hd2FyZF9xdWVzdCgmcHVia2V5LCAmc2lnLCAmcXVlc3RfaWQsIHJlY2lwaWVudCk7Cn0KCmZuIHNldF90aW1lKGY6ICZGaXh0dXJlLCB0aW1lc3RhbXA6IHU2NCkgewogICAgZi5lbnYubGVkZ2VyKCkud2l0aF9tdXQofGwgfCBsLnRpbWVzdGFtcCA9IHRpbWVzdGFtcCk7Cn0KCi8vLyBUaGUgcmF3IHN0b3JlZCBzdHJlYWssIGJ5cGFzc2luZyB0aGUgYGdldF9zdHJlYWtgIHZpZXcuCmZuIHN0b3JlZF9zdHJlYWsoZjogJkZpeHR1cmUsIHBsYXllcjogJkFkZHJlc3MpIC0+IFN0cmVhayB7CiAgICBmLmVudi5hc19jb250cmFjdCgmZi5xdWVzdC5hZGRyZXNzLCB8fCB7CiAgICAgICAgZi5lbnYKICAgICAgICAgICAgLnN0b3JhZ2UoKQogICAgICAgICAgICAucGVyc2lzdGVudCgpCiAgICAgICAgICAgIC5nZXQoJkRhdGFLZXk6OlN0cmVhayhwbGF5ZXIuY2xvbmUoKSkpCiAgICAgICAgICAgIC51bndyYXAoKQogICAgfSkKfQoKI1t0ZXN0XQpmbiBhd2FyZF9xdWVzdF9jcm9zc19jYWxsc19yZXB1dGF0aW9uX2FuZF9jcmVkaXRzX2Vhcm5lZCgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGxldCB1c2VyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKCiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMXUzMiwgJjJ1MzIsICZ1NjB1NjQpOyAvLyBxdWVzdCAxLCBzY2hlbWEgMiwgNTAgeHAKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMSwgJnVzZXIpOwoKICAgIC8vIFRoZSBjcm9zcy1jb250cmFjdCBhd2FyZF94cCBsYW5kZWQgb24gdGhlIEVBUk5FRCB0cmFjayBvbmx5LgogICAgYXNzZXJ0X2VxIShmLnJlcC5nZXRfZWFybmVkKCZ1c2VyKSwgNTApOwogICAgYXNzZXJ0X2VxIShmLnJlcC5nZXRfc2NvcmUoJnVzZXIpLCAwKTsKICAgIGFzc2VydCEoZi5yZXAuZ2V0X2F0dGVzdGF0aW9uKCZ1c2VyLCAmMikuaXNfc29tZSgpKTsKfQoKI1t0ZXN0XQojW3Nob3VsZF9wYW5pY10KZm4gYXdhcmRfcXVlc3RfcmVwbGF5X3JldmVydHMoKSB7CiAgICBsZXQgZiA9IHNldHVwKCk7CiAgICBsZXQgdXNlciA9IEFkZHJlc3M6OmdlbmVyYXRlKCZmLmVudik7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMXUzMiwgJjJ1MzIsICZ1NjB1NjQpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAxLCAmdXNlcik7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDEsICZ1c2VyKTsgLy8gcGFuaWNzOiBBbHJlYWR5Q2xhaW1lZCAocmVwbGF5IGd1YXJkKQp9CgojW3Rlc3RdCiNbc2hvdWxkX3BhbmljXQpmbiBhd2FyZF9xdWVzdF9ub25fYWxsb3dsaXN0ZWRfYXR0ZXN0ZXJfcmV2ZXJ0cygpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGxldCB1c2VyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYxdTMyLCAmMnUzMiwgJnU2MHU2NCk7CiAgICBsZXQgaW1wb3N0ZXIgPSBzaWduaW5nX2tleSg5OSk7IC8vIHZhbGlkIHNpZ25hdHVyZSwgYnV0IHB1YmtleSBub3QgYWxsb3dsaXN0ZWQKICAgIGF3YXJkKCZmLCAmaW1wb3N0ZXIsIDEsICZ1c2VyKTsgLy8gcGFuaWNzOiBOb3RBdXRob3JpemVkCn0KCiNbdGVzdF0KI1tzaG91bGRfcGFuaWNdCmZuIGF3YXJkX3F1ZXN0X2ZvcmdlZF9zaWduYXR1cmVfcmV2ZXJ0cygpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGxldCB1c2VyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYxdTMyLCAmMnUzMiwgJnU2MHU2NCk7CiAgICAvLyBBbGxvd2xpc3RlZCBwdWJrZXksIGJ1dCB0aGUgc2lnbmF0dXJlIGlzIGZyb20gYSBESUZGRVJFTlQga2V5IOKAlCBlZDI1NTE5X3ZlcmlmeSBwYW5pY3MuCiAgICBsZXQgd3JvbmcgPSBzaWduaW5nX2tleSg4KTsKICAgIGxldCBwYXlsb2FkID0gZi5xdWVzdC5xdWVzdF9wYXlsb2FkKCYxdTMyLCAmdXNlcik7CiAgICBsZXQgbXNnOiBzdGQ6OnZlYzo6VmVjPHU4PiA9IHBheWxvYWQuaXRlcigpLmNvbGxlY3QoKTsKICAgIGxldCBzaWcgPSBCeXRlc046OmZyb21fYXJyYXkoJmYuZW52LCAmd3Jvbmcuc2lnbigmbXNnKS50b19ieXRlcygpKTsKICAgIGYucXVlc3QuYXdhcmRfcXVlc3QoJmYuYXR0ZXN0ZXJfcHViLCAmc2lnLCAmMXUzMiwgJnVzZXIpOwp9CgojW3Rlc3RdCiNbc2hvdWxkX3BhbmljXQpmbiBhd2FyZF91bmtub3duX3F1ZXN0X3JldmVydHMoKSB7CiAgICBsZXQgZiA9IHNldHVwKCk7CiAgICBsZXQgdXNlciA9IEFkZHJlc3M6OmdlbmVyYXRlKCZmLmVudik7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDk5LCAmdXNlcik7IC8vIHBhbmljczogUXVlc3ROb3RGb3VuZAp9CgojW3Rlc3RdCiNbc2hvdWxkX3BhbmljXQpmbiBhd2FyZF9pbmFjdGl2ZV9xdWVzdF9yZXZlcnRzKCkgewogICAgbGV0IGYgPSBzZXR1cCgpOwogICAgbGV0IHVzZXIgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjF1MzIsICYydTMyLCAmdTYwdTY0KTsKICAgIGYucXVlc3Quc2V0X3F1ZXN0X2FjdGl2ZSgmMXUzMiwgJmZhbHNlKTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMSwgJnVzZXIpOyAvLyBwYW5pY3M6IFF1ZXN0SW5hY3RpdmUKfQoKI1t0ZXN0XQpmbiBhdHRlc3Rlcl9idWRnZXRfYWxsb3dzX3dpdGhpbl9idWRnZXQoKSB7CiAgICBsZXQgZiA9IHNldHVwKCk7CiAgICAvLyBCdWRnZXQgMTAwIFhQIC8gZGF5OyB0d28gNDAgWFAgYXdhcmRzIGZpdCBjb21mb3J0YWJseS4KICAgIGYucXVlc3Quc2V0X2F0dGVzdGVyX2J1ZGdldCgmZi5hdHRlc3Rlcl9wdWIsICYxMDB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjF1MzIsICYydTMyLCAmNDB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjJ1MzIsICYydTMyLCAmNDB1NjQpOwoKICAgIGxldCB1MSA9IEFkZHJlc3M6OmdlbmVyYXRlKCZmLmVudik7CiAgICBsZXQgdTIgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAxLCAmdTEpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAyLCAmdTIpOwoKICAgIGFzc2VydF9lcSEoZi5yZXAuZ2V0X2Vhcm5lZCgmdTEpLCA0MCk7CiAgICBhc3NlcnRfZXEhKGYucmVwLmdldF9lYXJuZWQoJnUyKSwgNDApOwogICAgbGV0IHVzYWdlID0gZi5xdWVzdC5nZXRfYXR0ZXN0ZXJfdXNhZ2UoJmYuYXR0ZXN0ZXJfcHViKTsKICAgIGFzc2VydF9lcSEodXNhZ2UudXNlZCwgODApOwogICAgYXNzZXJ0X2VxISh1c2FnZS5idWRnZXQsIDEwMCk7Cn0KCiNbdGVzdF0KI1twYW5pY3Nfd2l0aChFcnJvcjo6QXR0ZXN0ZXJCdWRnZXRFeGNlZWRlZCldCmZuIGF0dGVzdGVyX2J1ZGdldF9yZWplY3RzX292ZXJfYnVkZ2V0KCkgewogICAgbGV0IGYgPSBzZXR1cCgpOwogICAgZi5xdWVzdC5zZXRfYXR0ZXN0ZXJfYnVkZ2V0KCZmLmF0dGVzdGVyX3B1YiwgJjUwdTY0KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYxdTMyLCAmMnUzMiwgJjUwdTY0KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYydTMyLCAmMnUzMiwgJjEwdTY0KTsKCiAgICBsZXQgdTEgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgbGV0IHUyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMSwgJnUxKTsgLy8gNTAgLyA1MCAtPiBhdCBidWRnZXQKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMiwgJnUyKTsgLy8gNTAgKyAxMCA+IDUwIC0+IHJlamVjdGVkCn0KCiNbdGVzdF0KI1twYW5pY3Nfd2l0aChFcnJvcjo6QXR0ZXN0ZXJCdWRnZXRFeGNlZWRlZCldCmZuIGF0dGVzdGVyX2J1ZGdldF9yZWplY3RzX3NpbmdsZV9vdmVyX2J1ZGdldF9hd2FyZCgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGYucXVlc3Quc2V0X2F0dGVzdGVyX2J1ZGdldCgmZi5hdHRlc3Rlcl9wdWIsICYxMHU2NCk7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMXUzMiwgJjJ1MzIsICYxMXU2NCk7CiAgICBsZXQgdSA9IEFkZHJlc3M6OmdlbmVyYXRlKCZmLmVudik7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDEsICZ1KTsgLy8gMTEgPiAxMCAtPiByZWplY3RlZAp9CgojW3Rlc3RdCmZuIGF0dGVzdGVyX2J1ZGdldF9yZXNldHNfbmV4dF9kYXkoKSB7CiAgICBsZXQgZiA9IHNldHVwKCk7CiAgICBmLnF1ZXN0LnNldF9hdHRlc3Rlcl9idWRnZXQoJmYuYXR0ZXN0ZXJfcHViLCAmNTB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjF1MzIsICYydTMyLCAmNTB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjJ1MzIsICYydTMyLCAmNTB1NjQpOwoKICAgIC8vIERheSAwOiBzcGVuZCB0aGUgZnVsbCBidWRnZXQuCiAgICBzZXRfdGltZSgmZiwgMCk7CiAgICBsZXQgdTEgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAxLCAmdTEpOwogICAgYXNzZXJ0X2VxIShmLnF1ZXN0LmdldF9hdHRlc3Rlcl91c2FnZSgmZi5hdHRlc3Rlcl9wdWIpLnVzZWQsIDUwKTsKCiAgICAvLyBOZXh0IGRheTogdGhlIGJ1ZGdldCByZXNldHMsIHNvIGFub3RoZXIgNTAgWFAgYXdhcmQgaXMgYWNjZXB0ZWQuCiAgICBzZXRfdGltZSgmZiwgREFZX1NFQ1MpOwogICAgbGV0IHUyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMiwgJnUyKTsKICAgIGFzc2VydF9lcSEoZi5yZXAuZ2V0X2Vhcm5lZCgmdTIpLCA1MCk7CiAgICBhc3NlcnRfZXEhKGYucXVlc3QuZ2V0X2F0dGVzdGVyX3VzYWdlKCZmLmF0dGVzdGVyX3B1YikudXNlZCwgNTApOwp9CgojW3Rlc3RdCmZuIGF0dGVzdGVyX2J1ZGdldF96ZXJvX21lYW5zX3VubGltaXRlZCgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIC8vIE5vIGJ1ZGdldCBzZXQ6IHRoZSBkZWZhdWx0IGZvciBhIG5ldyBrZXkgaXMgdW5saW1pdGVkICgwKS4KICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYxdTMyLCAmMnUzMiwgJjEwMHU2NCk7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMnUzMiwgJjJ1MzIsICYxMDB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjN1MzIsICYydTMyLCAmMTAwdTY0KTsKCiAgICBmb3IgaWQgaW4gMS4uPTN1MzIgewogICAgICAgIGxldCB1ID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgICAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIGlkLCAmdSk7CiAgICB9CiAgICBsZXQgdXNhZ2UgPSBmLnF1ZXN0LmdldF9hdHRlc3Rlcl91c2FnZSgmZi5hdHRlc3Rlcl9wdWIpOwogICAgYXNzZXJ0X2VxISh1c2FnZS5idWRnZXQsIDApOwogICAgYXNzZXJ0X2VxISh1c2FnZS51c2VkLCAwKTsgLy8gdW5saW1pdGVkIGtleXMgZG9uJ3QgYWNjdW11bGF0ZSB1c2FnZQp9CgojW3Rlc3RdCiNbc2hvdWxkX3BhbmljXQpmbiBzZXRfYXR0ZXN0ZXJfYnVkZ2V0X3JlcXVpcmVzX2FsbG93bGlzdGVkX2tleSgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGxldCB1bmtub3duID0gQnl0ZXNOOjpmcm9tX2FycmF5KCZmLmVudiwgJnNpZ25pbmdfa2V5KDQyKS52ZXJpZnlpbmdfa2V5KCkudG9fYnl0ZXMoKSk7CiAgICBmLnF1ZXN0LnNldF9hdHRlc3Rlcl9idWRnZXQoJnVua25vd24sICYxMHU2NCk7IC8vIHBhbmljczogTm90QXV0aG9yaXplZAp9CgojW3Rlc3RdCmZuIGF0dGVzdGVyX2J1ZGdldF9ldmVudF9maXJlc19hdF84MF9wZXJjZW50KCkgewogICAgbGV0IGYgPSBzZXR1cCgpOwogICAgZi5xdWVzdC5zZXRfYXR0ZXN0ZXJfYnVkZ2V0KCZmLmF0dGVzdGVyX3B1YiwgJjEwMHU2NCk7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMXUzMiwgJjJ1MzIsICY3OXU2NCk7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMnUzMiwgJjJ1MzIsICYxdTY0KTsKCiAgICAvLyA3OSAlIGRvZXMgbm90IGNyb3NzIHRoZSB0aHJlc2hvbGQuCiAgICBsZXQgdTEgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAxLCAmdTEpOwogICAgLy8gODAlIGNyb3NzZXMgaXQg4oCUIG9uZSBldmVudCBpcyBlbWl0dGVkLgogICAgbGV0IHUyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMiwgJnUyKTsKICAgIGFzc2VydF9lcSEoZi5xdWVzdC5nZXRfYXR0ZXN0ZXJfdXNhZ2UoJmYuYXR0ZXN0ZXJfcHViKS51c2VkLCA4MCk7Cn0KCiNbdGVzdF0KZm4gYXR0ZXN0ZXJfYnVkZ2V0X2xlZ2FjeV9ib29sX2tleV9rZWVwc193b3JraW5nKCkgewogICAgLy8gU2ltdWxhdGUgYSBwcmUtbWlncmF0aW9uIGRlcGxveW1lbnQ6IHRoZSBrZXkgd2FzIHN0b3JlZCBhcyBhIGJvb2wgZmxhZy4KICAgIGxldCBlbnYgPSBFbnY6OmRlZmF1bHQoKTsKICAgIGVudi5tb2NrX2FsbF9hdXRocygpOwogICAgbGV0IGFkbWluID0gQWRkcmVzczo6Z2VuZXJhdGUoJmVudik7CiAgICBsZXQgYXR0ZXN0ZXJfc2sgPSBzaWduaW5nX2tleSg3KTsKICAgIGxldCBhdHRlc3Rlcl9wdWIgPSBCeXRlc046OmZyb21fYXJyYXkoJmVudiwgJmF0dGVzdGVyX3NrLnZlcmlmeWluZ19rZXkoKS50b19ieXRlcygpKTsKCiAgICBsZXQgcmVwX2lkID0gZW52LnJlZ2lzdGVyKFJlcHV0YXRpb25Db250cmFjdCwgKCkpOwogICAgbGV0IHJlcCA9IFJlcHV0YXRpb25Db250cmFjdENsaWVudDo6bmV3KCZlbnYsICZyZXBfaWQpOwogICAgcmVwLmluaXQoJmFkbWluKTsKCiAgICBsZXQgcXVlc3RfaWQgPSBlbnYucmVnaXN0ZXIoUXVlc3RSZWdpc3RyeUNvbnRyYWN0LCAoKSk7CiAgICBsZXQgcXVlc3QgPSBRdWVzdFJlZ2lzdHJ5Q29udHJhY3RDbGllbnQ6Om5ldygmZW52LCAmcXVlc3RfaWQpOwogICAgcXVlc3QuaW5pdCgmYWRtaW4sICZyZXBfaWQpOwogICAgcmVwLmFkZF9hdHRlc3RlcigmcXVlc3RfaWQpOwoKICAgIC8vIFdyaXRlIHRoZSBsZWdhY3kgYGJvb2xgIGZsYWcgZGlyZWN0bHkgaW50byBwZXJzaXN0ZW50IHN0b3JhZ2UuCiAgICBlbnYuYXNDb250cmFjdCgmcXVlc3RfaWQsIHx8IHsKICAgICAgICBlbnYuc3RvcmFnZSgpCiAgICAgICAgICAgIC5wZXJzaXN0ZW50KCkKICAgICAgICAgICAgLnNldCgmRGF0YUtleTo6QXR0ZXN0ZXJLZXkoYXR0ZXN0ZXJfcHViLmNsb25lKCkpLCAmdHJ1ZSk7CiAgICB9KTsKCiAgICBxdWVzdC5jcmVhdGVfcXVlc3QoJjF1MzIsICYydTMyLCAmNTB1NjQpOwogICAgbGV0IHVzZXIgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZW52KTsKICAgIGxldCBwYXlsb2FkID0gcXVlc3QucXVlc3RfcGF5bG9hZCgmMXUzMiwgJnVzZXIpOwogICAgbGV0IG1zZzogc3RkOjp2ZWM6OlZlYzx1OD4gPSBwYXlsb2FkLml0ZXIoKS5jb2xsZWN0KCk7CiAgICBsZXQgc2lnID0gQnl0ZXNOOjpmcm9tX2FycmF5KCZlbnYsICZhdHRlc3Rlcl9zay5zaWduKCZtc2cpLnRvX2J5dGVzKCkpOwogICAgcXVlc3QuYXdhcmRfcXVlc3QoJmF0dGVzdGVyX3B1YiwgJnNpZywgJjF1MzIsICZ1c2VyKTsKCiAgICBhc3NlcnRfZXEhKHJlcC5nZXRfZWFybmVkKCZ1c2VyKSwgNTApOwogICAgLy8gVGhlIGxlZ2FjeSBrZXkgcmVhZHMgYXMgdW5saW1pdGVkLgogICAgbGV0IHVzYWdlID0gcXVlc3QuZ2V0X2F0dGVzdGVyX3VzYWdlKCZhdHRlc3Rlcl9wdWIpOwogICAgYXNzZXJ0X2VxISh1c2FnZS5idWRnZXQsIDApOwp9CgojW3Rlc3RdCmZuIHdlZWtseV9zdHJlYWtfaW5jcmVtZW50c190aGVuX3Jlc2V0c19vbl9hX2dhcCgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGxldCB1c2VyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYxdTMyLCAmMnUzMiwgJjEwdTY0KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYydTMyLCAmMnUzMiwgJjEwdTY0KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYzdTMyLCAmMnUzMiwgJjEwdTY0KTsKCiAgICAvLyBXZWVrIDA6IGZpcnN0IGNvbXBsZXRpb24gLT4gc3RyZWFrIDEuCiAgICBmLmVudi5sZWRnZXIoKS53aXRoX211dCh8bCB8IGwudGltZXN0YW1wID0gMCk7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDEsICZ1c2VyKTsKICAgIGFzc2VydF9lcSEoZi5xdWVzdC5nZXRfc3RyZWFrKCZ1c2VyKS53ZWVrcywgMSk7CgogICAgLy8gV2VlayAxIChjb25zZWN1dGl2ZSkgLT4gc3RyZWFrIDIuCiAgICBmLmVudi5sZWRnZXIoKS53aXRoX211dCh8bCB8IGwudGltZXN0YW1wID0gV0VFS19TRUNTKTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMiwgJnVzZXIpOwogICAgbGV0IHMgPSBmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpOwogICAgYXNzZXJ0X2VxIShzLndlZWtzLCAyKTsKICAgIGFzc2VydF9lcSEocy5iZXN0LCAyKTsKCiAgICAvLyBXZWVrIDMgKHNraXBwZWQgd2VlayAyKSAtPiByZXNldCB0byAxLCBidXQgYmVzdCBzdGF5cyAyLgogICAgZi5lbnYubGVkZ2VyKCkud2l0aF9tdXQofGwgfCBsLnRpbWVzdGFtcCA9IFdFRUtfU0VDUyAqIDMpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAzLCAmdXNlcik7CiAgICBsZXQgcyA9IGYucXVlc3QuZ2V0X3N0cmVhaygmdXNlcik7CiAgICBhc3NlcnRfZXEhKHMud2Vla3MsIDEpOwogICAgYXNzZXJ0X2VxIShzLmJlc3QsIDIpOwp9CgovLy8gVGh1cnNkYXkgMjAyNi0xMC0wMSAwMDowMDowMCBVVEMsIGEgd2VlayBib3VuZGFyeSAoMTk3MC0wMS0wMSB3YXMgYSBUaHVyc2RheSkuCmNvbnN0IFRIVV8yMDI2XzEwXzAxOiB1NjQgPSAxXzc5MF84MTJfODAwOwoKI1t0ZXN0XQpmbiB3ZWVrX2JvdW5kc19mbGlwX2F0X3RodXJzZGF5X21pZG5pZ2h0X3V0YygpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKCiAgICAvLyBXZWVrIDAgc3RhcnRzIGF0IHRoZSBlcG9jaC4KICAgIHNldF90aW1lKCZmLCAwKTsKICAgIGFzc2VydF9lcSEoZi5xdWVzdC5nZXRfd2Vla19ib3VuZHMoKSwgKDAsIFdFRUtfU0VDUyAtIDEpKTsKCiAgICAvLyBXZWRuZXNkYXkgMjAyNi0wOS0zMCAyMzo1OTo1OSBVVEMgaXMgdGhlIGxhc3Qgc2Vjb25kIG9mIHdlZWsgMjk2MC4KICAgIHNldF90aW1lKCZmLCBUSFVfMjAyNl8xMF8wMSAtIDEpOwogICAgYXNzZXJ0X2VxIShmLnF1ZXN0LmdldF93ZWVrKCksIDI5NjApOwogICAgYXNzZXJ0X2VxISgKICAgICAgICBmLnF1ZXN0LmdldF93ZWVrX2JvdW5kcygpLAogICAgICAgIChUSFVfMjAyNl8xMF8wMSAtIFdFRUtfU0VDUywgVEhVXzIwMjZfMTBfMDEgLSAxKQogICAgKTsKCiAgICAvLyBPbmUgc2Vjb25kIGxhdGVyLCBUaHVyc2RheSAwMDowMDowMCBVVEMsIHdlZWsgMjk2MSBzdGFydHMuLi4KICAgIHNldF90aW1lKCZmLCBUSFVfMjAyNl8xMF8wMSk7CiAgICBhc3NlcnRfZXEhKGYucXVlc3QuZ2V0X3dlZWsoKSwgMjk2MSk7CiAgICBsZXQgdGhpc193ZWVrID0gKFRIVV8yMDI2XzEwXzAxLCBUSFVfMjAyNl8xMF8wMSArIFdFRUtfU0VDUyAtIDEpOwogICAgYXNzZXJ0X2VxIShmLnF1ZXN0LmdldF93ZWVrX2JvdW5kcygpLCB0aGlzX3dlZWspOwoKICAgIC8vIC4uLmFuZCBydW5zIHRocm91Z2ggV2VkbmVzZGF5IDIwMjYtMTAtMDcgMjM6NTk6NTkgVVRDLgogICAgc2V0X3RpbWUoJmYsIFRIVV8yMDI2XzEwXzAxICsgV0VFS19TRUNTIC0gMSk7CiAgICBhc3NlcnRfZXEhKGYucXVlc3QuZ2V0X3dlZWsoKSwgMjk2MSk7CiAgICBhc3NlcnRfZXEhKGYucXVlc3QuZ2V0X3dlZWtfYm91bmRzKCksIHRoaXNfd2Vlayk7Cn0KCiNbdGVzdF0KZm4gY29tcGxldGlvbnNfZWl0aGVyX3NpZGVfb2ZfdGh1cnNkYXlfbWlkbmlnaHRfYXJlX2NvbnNlY3V0aXZlX3dlZWtzKCkgewogICAgbGV0IGYgPSBzZXR1cCgpOwogICAgbGV0IHVzZXIgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjF1MzIsICYydTMyLCAmMTB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjJ1MzIsICYydTMyLCAmMTB1NjQpOwoKICAgIC8vIE9uZSBzZWNvbmQgYXBhcnQsIGJ1dCBXZWRuZXNkYXkgMjM6NTk6NTkgYW5kIFRodXJzZGF5IDAwOjAwOjAwIFVUQyBhcmUgdHdvIHdlZWtzLgogICAgc2V0X3RpbWUoJmYsIFRIVV8yMDI2XzEwXzAxIC0gMSk7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDEsICZ1c2VyKTsKICAgIHNldF90aW1lKCZmLCBUSFVfMjAyNl8xMF8wMSk7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDIsICZ1c2VyKTsKICAgIGxldCBzID0gZi5xdWVzdC5nZXRfc3RyZWFrKCZ1c2VyKTsKICAgIGFzc2VydF9lcSEoKHMud2Vla3MsIHMubGFzdF93ZWVrKSwgKDIsIDI5NjEpKTsKfQoKI1t0ZXN0XQpmbiBnZXRfc3RyZWFrX3ZpZXdfbm9ybWFsaXplc19za2lwcGVkX3dlZWtzKCkgewogICAgbGV0IGYgPSBzZXR1cCgpOwogICAgbGV0IHVzZXIgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjF1MzIsICYydTMyLCAmMTB1NjQpOwogICAgZi5xdWVzdC5jcmVhdGVfcXVlc3QoJjJ1MzIsICYydTMyLCAmMTB1NjQpOwoKICAgIC8vIENvbXBsZXRpb25zIGluIHdlZWtzIDEwIGFuZCAxMS4KICAgIHNldF90aW1lKCZmLCBXRUVLX1NFQ1MgKiAxMCk7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDEsICZ1c2VyKTsKICAgIHNldF90aW1lKCZmLCBXRUVLX1NFQ1MgKiAxMSk7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDIsICZ1c2VyKTsKCiAgICAvLyBDdXJyZW50IHdlZWs6IHRoZSBsaXZlIGNvdW50LgogICAgbGV0IHMgPSBmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpOwogICAgYXNzZXJ0X2VxISgocy53ZWVrcywgcy5iZXN0LCBzLmxhc3Rfd2VlayksICgyLCAyLCAxMSkpOwoKICAgIC8vIFdlZWsgMTI6IHRoZSBsYXN0IGNvbXBsZXRpb24gd2FzIGxhc3Qgd2Vlaywgc28gdGhlIHJ1biBjYW4gc3RpbGwgYmUgZXh0ZW5kZWQuCiAgICBzZXRfdGltZSgmZiwgV0VFS19TRUNTICogMTIpOwogICAgYXNzZXJ0X2VxIShmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpLndlZWtzLCAyKTsKCiAgICAvLyBXZWVrIDEzOiB3ZWVrIDEyIHdhcyBza2lwcGVkIHdpdGggbm8gbmV3IGF3YXJkLCBzbyB0aGUgcnVuIGlzIGRlYWQ7IGJlc3QgaXMga2VwdC4KICAgIHNldF90aW1lKCZmLCBXRUVLX1NFQ1MgKiAxMyk7CiAgICBsZXQgcyA9IGYucXVlc3QuZ2V0X3N0cmVhaygmdXNlcik7CiAgICBhc3NlcnRfZXEhKChzLndlZWtzLCBzLmJlc3QsIHMubGFzdF93ZWVrKSwgKDAsIDIsIDExKSk7Cn0KCiNbdGVzdF0KZm4gZ2V0X3N0cmVha19sYXBzZXNfZXhhY3RseV9hdF90aGVfd2Vla19ib3VuZGFyeSgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIGxldCB1c2VyID0gQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KTsKICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCYxdTMyLCAmMnUzMiwgJjEwdTY0KTsKCiAgICAvLyBDb21wbGV0ZSBpbiB0aGUgbGFzdCBzZWNvbmQgb2Ygd2VlayAxMC4KICAgIHNldF90aW1lKCZmLCBXRUVLX1NFQ1MgKiAxMSAtIDEpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAxLCAmdXNlcik7CgogICAgLy8gTGl2ZSBmb3IgdGhlIHdob2xlIG9mIHdlZWsgMTEsIGZpcnN0IHNlY29uZCB0byBsYXN0LgogICAgc2V0X3RpbWUoJmYsIFdFRUtfU0VDUyAqIDExKTsKICAgIGFzc2VydF9lcSEoZi5xdWVzdC5nZXRfc3RyZWFrKCZ1c2VyKS53ZWVrcywgMSk7CiAgICBzZXRfdGltZSgmZiwgV0VFS19TRUNTICogMTIgLSAxKTsKICAgIGFzc2VydF9lcSEoZi5xdWVzdC5nZXRfc3RyZWFrKCZ1c2VyKS53ZWVrcywgMSk7CgogICAgLy8gTGFwc2VkIGZyb20gdGhlIGZpcnN0IHNlY29uZCBvZiB3ZWVrIDEyLgogICAgc2V0X3RpbWUoJmYsIFdFRUtfU0VDUyAqIDEyKTsKICAgIGxldCBzID0gZi5xdWVzdC5nZXRfc3RyZWFrKCZ1c2VyKTsKICAgIGFzc2VydF9lcSEoKHMud2Vla3MsIHMuYmVzdCwgcy5sYXN0X3dlZWspLCAoMCwgMSwgMTApKTsKCiAgICAvLyBUaGUgdmlldyBkaWQgbm90IHJld3JpdGUgc3RvcmFnZS4KICAgIGxldCBzdG9yZWQgPSBzdG9yZWRfc3RyZWFrKCZmLCA mdXNlcik7CiAgICBhc3NlcnRfZXEhKChzdG9yZWQud2Vla3MsIHN0b3JlZC5iZXN0LCBzdG9yZWQubGFzdF93ZWVrKSwgKDEsIDEsIDEwKSk7Cn0KCiNbdGVzdF0KZm4gZ2V0X3N0cmVha192aWV3X2xlYXZlc190aGVfYXdhcmRfcGF0aF91bmNoYW5nZWQoKSB7CiAgICBsZXQgZiA9IHNldHVwKCk7CiAgICBsZXQgdXNlciA9IEFkZHJlc3M6OmdlbmVyYXRlKCZmLmVudik7CiAgICBmb3IgaWQgaW4gMS4uPTR1MzIgewogICAgICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCZpZCwgJjJ1MzIsICYxMHU2NCk7CiAgICB9CiAgICBzZXRfdGltZSgmZiwgV0VFS19TRUNTICogMTApOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAxLCAmdXNlcik7CiAgICBzZXRfdGltZSgmZiwgV0VFS19TRUNTICogMTEpOwogICAgYXdhcmQoJmYsICZmLmF0dGVzdGVyX3NrLCAyLCAmdXNlcik7CgogICAgLy8gUmVhZGluZyBhIGxhcHNlZCBydW4gY2hhbmdlcyBub3RoaW5nIG9uIGNoYWluLi4uCiAgICBzZXRfdGltZSgmZiwgV0VFS19TRUNTICogMTMpOwogICAgYXNzZXJ0X2VxIShmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpLndlZWtzLCAwKTsKICAgIGxldCBzdG9yZWQgPSBzdG9yZWRfc3RyZWFrKCZmLCA mdXNlcik7CiAgICBhc3NlcnRfZXEhKChzdG9yZWQud2Vla3MsIHN0b3JlZC5iZXN0LCBzdG9yZWQubGFzdF93ZWVrKSwgKDIsIDIsIDExKSk7CgogICAgLy8gLi4uc28gdGhlIGF3YXJkIHBhdGggc3RpbGwgZGVjaWRlczogYSBjb21wbGV0aW9uIGFmdGVyIHRoZSBnYXAgcmVzdGFydHMgYXQgMS4KICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMywgJnVzZXIpOwogICAgbGV0IHMgPSBmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpOwogICAgYXNzZXJ0X2VxISgocy53ZWVrcywgcy5iZXN0LCBzLmxhc3Rfd2VlayksICgxLCAyLCAxMykpOwoKICAgIC8vIEFuZCBhIGNvbXBsZXRpb24gaW4gdGhlIGZvbGxvd2luZyB3ZWVrIGV4dGVuZHMgaXQgYXMgYmVmb3JlLgogICAgc2V0X3RpbWUoJmYsIFdFRUtfU0VDUyAqIDE0KTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgNCwgJnVzZXIpOwogICAgbGV0IHMgPSBmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpOwogICAgYXNzZXJ0X2VxISgocy53ZWVrcywgcy5iZXN0LCBzLmxhc3Rfd2VlayksICgyLCAyLCAxNCkpOwp9CgojW3Rlc3RdCmZuIGdldF9zdHJlYWtfaXNfemVyb19mb3JfYV9wbGF5ZXJfd2hvX25ldmVyX2NvbXBsZXRlZCgpIHsKICAgIGxldCBmID0gc2V0dXAoKTsKICAgIHNldF90aW1lKCZmLCBXRUVLX1NFQ1MgKiA0MCk7CiAgICBsZXQgcyA9IGYucXVlc3QuZ2V0X3N0cmVhaygmQWRkcmVzczo6Z2VuZXJhdGUoJmYuZW52KSk7CiAgICBhc3NlcnRfZXEhKChzLndlZWtzLCBzLmJlc3QsIHMubGFzdF93ZWVrKSwgKDAsIDAsIDApKTsKfQoKI1t0ZXN0XQpmbiBzYW1lX3dlZWtfY29tcGxldGlvbnNfZG9fbm90X2RvdWJsZV9jb3VudF9zdHJlYWsoKSB7CiAgICBsZXQgZiA9IHNldHVwKCk7CiAgICBsZXQgdXNlciA9IEFkZHJlc3M6OmdlbmVyYXRlKCZmLmVudik7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMXUzMiwgJjJ1MzIsICYxMHU2NCk7CiAgICBmLnF1ZXN0LmNyZWF0ZV9xdWVzdCgmMnUzMiwgJjJ1MzIsICYxMHU2NCk7CiAgICBmLmVudi5sZWRnZXIoKS53aXRoX211dCh8bCB8IGwudGltZXN0YW1wID0gV0VFS19TRUNTICogNSk7CiAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIDEsICZ1c2VyKTsKICAgIGF3YXJkKCZmLCAmZi5hdHRlc3Rlcl9zaywgMiwgJnVzZXIpOyAvLyBzYW1lIHdlZWsKICAgIGFzc2VydF9lcSEoZi5xdWVzdC5nZXRfc3RyZWFrKCZ1c2VyKS53ZWVrcywgMSk7Cn0KCnByb3B0ZXN0ISB7CiAgICAvLyBFYWNoIGNhc2UgcnVucyB1cCB0byA1MCBzaWduZWQgYXdhcmRzIGluIGEgZnJlc2ggZW52LCBzbyBrZWVwIHRoZSBjYXNlIGNvdW50IG1vZGVzdC4KICAgICNbcHJvcHRlc3RfY29uZmlnKFByb3B0ZXN0Q29uZmlnOjp3aXRoX2Nhc2VzKDMyKSldCgogICAgLy8vIEludmFyaWFudDogZm9yIGFueSBzb3J0ZWQgc2VxdWVuY2Ugb2YgY29tcGxldGlvbiB3ZWVrcyAoZHVwbGljYXRlcyBhbGxvd2VkKSwgdGhlCiAgICAvLy8gb24tY2hhaW4gc3RyZWFrIG1hdGNoZXMgYSByZWZlcmVuY2UgbW9kZWwgZXhhY3RseSDigJQgc2FtZSB3ZWVrID0gbm8gY2hhbmdlLCB0aGUKICAgIC8vLyBuZXh0IHdlZWsgPSArMSwgYW55IGdhcCA9IHJlc2V0IHRvIDEg4oCUIGFuZCBgYmVzdGAgaXMgdGhlIHJ1bm5pbmcgbWF4aW11bS4KICAgICNbdGVzdF0KICAgIGZuIHdlZWtseV9zdHJlYWtfbWF0Y2hlc19yZWZlcmVuY2VfbW9kZWwobXV0IHdlZWtzIGluIHByb3A6OmNvbGxlY3Rpb246OnZlYygwdTY0Li4xMDAwLCAxLi41MCkpIHsKICAgICAgICBsZXQgZiA9IHNldHVwKCk7CiAgICAgICAgbGV0IHVzZXIgPSBBZGRyZXNzOjpnZW5lcmF0ZSgmZi5lbnYpOwogICAgICAgIHdlZWtzLnNvcnRfdW5zdGFibGUoKTsKCiAgICAgICAgbGV0IG11dCBydW4gPSAwdTMyOwogICAgICAgIGxldCBtdXQgYmVzdCA9IDB1MzI7CiAgICAgICAgbGV0IG11dCBwcmV2OiBPcHRpb248dTY0PiA9IE5vbmU7CgogICAgICAgIGZvciAoaSwgJncpIGluIHdlZWtzLml0ZXIoKS5lbnVtZXJhdGUoKSB7CiAgICAgICAgICAgIC8vIEEgZnJlc2ggcXVlc3QgcGVyIGNvbXBsZXRpb246IHRoZSByZXBsYXkgZ3VhcmQgaXMga2V5ZWQgcGVyIChxdWVzdCwgcmVjaXBpZW50KS4KICAgICAgICAgICAgbGV0IHF1ZXN0X2lkID0gKGkgYXMgdTMyKSArIDE7CiAgICAgICAgICAgIGYucXVlc3QuY3JlYXRlX3F1ZXN0KCZxdWVzdF9pZCwgJjJ1MzIsICYxMHU2NCk7CiAgICAgICAgICAgIGYucXVlc3Quc2V0X3F1ZXN0X2FjdGl2ZSgmcXVlc3RfaWQsICZ0cnVlKTsKICAgICAgICAgICAgc2V0X3RpbWUoJmYsIHcpOwogICAgICAgICAgICBhd2FyZCgmZiwgJmYuYXR0ZXN0ZXJfc2ssIHF1ZXN0X2lkLCAmdXNlcik7CgogICAgICAgICAgICBpZiBwcmV2ID09IFNvbWUodykgewogICAgICAgICAgICAgICAgLy8gc2FtZSB3ZWVrIOKAlCBubyBjaGFuZ2UKICAgICAgICAgICAgfSBlbHNlIGlmIHByZXYgPT0gU29tZSh3LnNhdHVyYXRpbmdfc3ViKDEpKSB7CiAgICAgICAgICAgICAgICBydW4gKz0gMTsKICAgICAgICAgICAgfSBlbHNlIHsKICAgICAgICAgICAgICAgIHJ1biA9IDE7CiAgICAgICAgICAgIH0KICAgICAgICAgICAgaWYgcnVuID4gYmVzdCB7CiAgICAgICAgICAgICAgICBiZXN0ID0gcnVuOwogICAgICAgICAgICB9CiAgICAgICAgICAgIHByZXYgPSBTb21lKHcpOwoKICAgICAgICAgICAgbGV0IHMgPSBmLnF1ZXN0LmdldF9zdHJlYWsoJnVzZXIpOwogICAgICAgICAgICBhc3NlcnRfZXEhKHMud2Vla3MsIHJ1bik7CiAgICAgICAgICAgIGFzc2VydF9lcSEocy5iZXN0LCBiZXN0KTsKICAgICAgICB9CiAgICB9Cn0K
+#![cfg(test)]
+//! Integration tests for the QuestRegistry -> Reputation CROSS-CONTRACT path plus the
+//! attester ed25519 SIGNATURE gate (`award_quest` verifies a signed payload, not an
+//! on-chain attester auth) and the on-chain `recipient.require_auth()` ownership proof.
+extern crate std;
+use super::*;
+use alvinmunk_reputation::{ReputationContract, ReputationContractClient};
+use ed25519_dalek::{Signer, SigningKey};
+use proptest::prelude::*;
+use soroban_sdk::{
+    testutils::{
+        storage::{Persistent as _, Temporary as _},
+        Address as _, Events as _, Ledger as _,
+    },
+    BytesN, Env, TryFromVal,
+};
+
+struct Fixture<'a> {
+    env: Env,
+    rep: ReputationContractClient<'a>,
+    quest: QuestRegistryContractClient<'a>,
+    attester_sk: SigningKey,
+    attester_pub: BytesN<32>,
+}
+
+fn signing_key(seed: u8) -> SigningKey {
+    SigningKey::from_bytes(&[seed; 32])
+}
+
+fn setup() -> Fixture<'static> {
+    setup_in(Env::default())
+}
+
+fn setup_in(env: Env) -> Fixture<'static> {
+    env.mock_all_auths();
+    let admin = Address::generate(&env);
+    let attester_sk = signing_key(7);
+    let attester_pub = BytesN::from_array(&env, &attester_sk.verifying_key().to_bytes());
+
+    let rep_id = env.register(ReputationContract, ());
+    let rep = ReputationContractClient::new(&env, &rep_id);
+    rep.init(&admin);
+
+    let quest_id = env.register(QuestRegistryContract, ());
+    let quest = QuestRegistryContractClient::new(&env, &quest_id);
+    quest.init(&admin, &rep_id);
+
+    // Wire: the QuestRegistry CONTRACT is an allowlisted attester in Reputation (for the
+    // award_xp cross-call); the off-chain attester ed25519 PUBKEY is allowlisted here.
+    rep.add_attester(&quest_id);
+    quest.add_attester_key(&attester_pub);
+
+    Fixture {
+        env,
+        rep,
+        quest,
+        attester_sk,
+        attester_pub,
+    }
+}
+
+/// Sign the contract's canonical payload with `sk` and award the quest.
+fn award(f: &Fixture, sk: &SigningKey, quest_id: u32, recipient: &Address) {
+    let pubkey = BytesN::from_array(&f.env, &sk.verifying_key().to_bytes());
+    let payload = f.quest.quest_payload(&quest_id, recipient);
+    let msg: std::vec::Vec<u8> = payload.iter().collect();
+    let sig = BytesN::from_array(&f.env, &sk.sign(&msg).to_bytes());
+    f.quest.award_quest(&pubkey, &sig, &quest_id, recipient);
+}
+
+/// `award`, but returning the contract error instead of panicking.
+fn try_award(
+    f: &Fixture,
+    sk: &SigningKey,
+    quest_id: u32,
+    recipient: &Address,
+) -> Result<(), Error> {
+    let pubkey = pub_key(f, sk);
+    let payload = f.quest.quest_payload(&quest_id, recipient);
+    let msg: std::vec::Vec<u8> = payload.iter().collect();
+    let sig = BytesN::from_array(&f.env, &sk.sign(&msg).to_bytes());
+    match f.quest.try_award_quest(&pubkey, &sig, &quest_id, recipient) {
+        Ok(_) => Ok(()),
+        Err(Ok(e)) => Err(Error::try_from(e).expect("a QuestRegistry error")),
+        Err(Err(e)) => panic!("award_quest invoke error: {e:?}"),
+    }
+}
+
+fn pub_key(f: &Fixture, sk: &SigningKey) -> BytesN<32> {
+    BytesN::from_array(&f.env, &sk.verifying_key().to_bytes())
+}
+
+fn set_time(f: &Fixture, timestamp: u64) {
+    f.env.ledger().with_mut(|l| l.timestamp = timestamp);
+}
+
+/// The raw stored streak, bypassing the `get_streak` view.
+fn stored_streak(f: &Fixture, player: &Address) -> Streak {
+    f.env.as_contract(&f.quest.address, || {
+        f.env
+            .storage()
+            .persistent()
+            .get(&DataKey::Streak(player.clone()))
+            .unwrap()
+    })
+}
+
+#[test]
+fn award_quest_cross_calls_reputation_and_credits_earned() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+
+    f.quest.create_quest(&1u32, &2u32, &50u64); // quest 1, schema 2, 50 xp
+    award(&f, &f.attester_sk, 1, &user);
+
+    // The cross-contract award_xp landed on the EARNED track only.
+    assert_eq!(f.rep.get_earned(&user), 50);
+    assert_eq!(f.rep.get_score(&user), 0);
+    assert!(f.rep.get_attestation(&user, &2).is_some());
+}
+
+#[test]
+#[should_panic]
+fn award_quest_replay_reverts() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &50u64);
+    award(&f, &f.attester_sk, 1, &user);
+    award(&f, &f.attester_sk, 1, &user); // panics: AlreadyClaimed (replay guard)
+}
+
+#[test]
+#[should_panic]
+fn award_quest_non_allowlisted_attester_reverts() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &50u64);
+    let imposter = signing_key(99); // valid signature, but pubkey not allowlisted
+    award(&f, &imposter, 1, &user); // panics: NotAuthorized
+}
+
+#[test]
+#[should_panic]
+fn award_quest_forged_signature_reverts() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &50u64);
+    // Allowlisted pubkey, but the signature is from a DIFFERENT key — ed25519_verify panics.
+    let wrong = signing_key(8);
+    let payload = f.quest.quest_payload(&1u32, &user);
+    let msg: std::vec::Vec<u8> = payload.iter().collect();
+    let sig = BytesN::from_array(&f.env, &wrong.sign(&msg).to_bytes());
+    f.quest.award_quest(&f.attester_pub, &sig, &1u32, &user);
+}
+
+#[test]
+#[should_panic]
+fn award_unknown_quest_reverts() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    award(&f, &f.attester_sk, 99, &user); // panics: QuestNotFound
+}
+
+#[test]
+#[should_panic]
+fn award_inactive_quest_reverts() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &50u64);
+    f.quest.set_quest_active(&1u32, &false);
+    award(&f, &f.attester_sk, 1, &user); // panics: QuestInactive
+}
+
+#[test]
+fn weekly_streak_increments_then_resets_on_a_gap() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &10u64);
+    f.quest.create_quest(&2u32, &2u32, &10u64);
+    f.quest.create_quest(&3u32, &2u32, &10u64);
+
+    // Week 0: first completion -> streak 1.
+    f.env.ledger().with_mut(|l| l.timestamp = 0);
+    award(&f, &f.attester_sk, 1, &user);
+    assert_eq!(f.quest.get_streak(&user).weeks, 1);
+
+    // Week 1 (consecutive) -> streak 2.
+    f.env.ledger().with_mut(|l| l.timestamp = WEEK_SECS);
+    award(&f, &f.attester_sk, 2, &user);
+    let s = f.quest.get_streak(&user);
+    assert_eq!(s.weeks, 2);
+    assert_eq!(s.best, 2);
+
+    // Week 3 (skipped week 2) -> reset to 1, but best stays 2.
+    f.env.ledger().with_mut(|l| l.timestamp = WEEK_SECS * 3);
+    award(&f, &f.attester_sk, 3, &user);
+    let s = f.quest.get_streak(&user);
+    assert_eq!(s.weeks, 1);
+    assert_eq!(s.best, 2);
+}
+
+/// Thursday 2026-10-01 00:00:00 UTC, a week boundary (1970-01-01 was a Thursday).
+const THU_2026_10_01: u64 = 1_790_812_800;
+
+#[test]
+fn week_bounds_flip_at_thursday_midnight_utc() {
+    let f = setup();
+
+    // Week 0 starts at the epoch.
+    set_time(&f, 0);
+    assert_eq!(f.quest.get_week_bounds(), (0, WEEK_SECS - 1));
+
+    // Wednesday 2026-09-30 23:59:59 UTC is the last second of week 2960.
+    set_time(&f, THU_2026_10_01 - 1);
+    assert_eq!(f.quest.get_week(), 2960);
+    assert_eq!(
+        f.quest.get_week_bounds(),
+        (THU_2026_10_01 - WEEK_SECS, THU_2026_10_01 - 1)
+    );
+
+    // One second later, Thursday 00:00:00 UTC, week 2961 starts...
+    set_time(&f, THU_2026_10_01);
+    assert_eq!(f.quest.get_week(), 2961);
+    let this_week = (THU_2026_10_01, THU_2026_10_01 + WEEK_SECS - 1);
+    assert_eq!(f.quest.get_week_bounds(), this_week);
+
+    // ...and runs through Wednesday 2026-10-07 23:59:59 UTC.
+    set_time(&f, THU_2026_10_01 + WEEK_SECS - 1);
+    assert_eq!(f.quest.get_week(), 2961);
+    assert_eq!(f.quest.get_week_bounds(), this_week);
+}
+
+#[test]
+fn completions_either_side_of_thursday_midnight_are_consecutive_weeks() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &10u64);
+    f.quest.create_quest(&2u32, &2u32, &10u64);
+
+    // One second apart, but Wednesday 23:59:59 and Thursday 00:00:00 UTC are two weeks.
+    set_time(&f, THU_2026_10_01 - 1);
+    award(&f, &f.attester_sk, 1, &user);
+    set_time(&f, THU_2026_10_01);
+    award(&f, &f.attester_sk, 2, &user);
+    let s = f.quest.get_streak(&user);
+    assert_eq!((s.weeks, s.last_week), (2, 2961));
+}
+
+#[test]
+fn get_streak_view_normalizes_skipped_weeks() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &10u64);
+    f.quest.create_quest(&2u32, &2u32, &10u64);
+
+    // Completions in weeks 10 and 11.
+    set_time(&f, WEEK_SECS * 10);
+    award(&f, &f.attester_sk, 1, &user);
+    set_time(&f, WEEK_SECS * 11);
+    award(&f, &f.attester_sk, 2, &user);
+
+    // Current week: the live count.
+    let s = f.quest.get_streak(&user);
+    assert_eq!((s.weeks, s.best, s.last_week), (2, 2, 11));
+
+    // Week 12: the last completion was last week, so the run can still be extended.
+    set_time(&f, WEEK_SECS * 12);
+    assert_eq!(f.quest.get_streak(&user).weeks, 2);
+
+    // Week 13: week 12 was skipped with no new award, so the run is dead; best is kept.
+    set_time(&f, WEEK_SECS * 13);
+    let s = f.quest.get_streak(&user);
+    assert_eq!((s.weeks, s.best, s.last_week), (0, 2, 11));
+}
+
+#[test]
+fn get_streak_lapses_exactly_at_the_week_boundary() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &10u64);
+
+    // Complete in the last second of week 10.
+    set_time(&f, WEEK_SECS * 11 - 1);
+    award(&f, &f.attester_sk, 1, &user);
+
+    // Live for the whole of week 11, first second to last.
+    set_time(&f, WEEK_SECS * 11);
+    assert_eq!(f.quest.get_streak(&user).weeks, 1);
+    set_time(&f, WEEK_SECS * 12 - 1);
+    assert_eq!(f.quest.get_streak(&user).weeks, 1);
+
+    // Lapsed from the first second of week 12.
+    set_time(&f, WEEK_SECS * 12);
+    let s = f.quest.get_streak(&user);
+    assert_eq!((s.weeks, s.best, s.last_week), (0, 1, 10));
+
+    // The view did not rewrite storage.
+    let stored = stored_streak(&f, &user);
+    assert_eq!((stored.weeks, stored.best, stored.last_week), (1, 1, 10));
+}
+
+#[test]
+fn get_streak_view_leaves_the_award_path_unchanged() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    for id in 1..=4u32 {
+        f.quest.create_quest(&id, &2u32, &10u64);
+    }
+    set_time(&f, WEEK_SECS * 10);
+    award(&f, &f.attester_sk, 1, &user);
+    set_time(&f, WEEK_SECS * 11);
+    award(&f, &f.attester_sk, 2, &user);
+
+    // Reading a lapsed run changes nothing on chain...
+    set_time(&f, WEEK_SECS * 13);
+    assert_eq!(f.quest.get_streak(&user).weeks, 0);
+    let stored = stored_streak(&f, &user);
+    assert_eq!((stored.weeks, stored.best, stored.last_week), (2, 2, 11));
+
+    // ...so the award path still decides: a completion after the gap restarts at 1.
+    award(&f, &f.attester_sk, 3, &user);
+    let s = f.quest.get_streak(&user);
+    assert_eq!((s.weeks, s.best, s.last_week), (1, 2, 13));
+
+    // And a completion in the following week extends it as before.
+    set_time(&f, WEEK_SECS * 14);
+    award(&f, &f.attester_sk, 4, &user);
+    let s = f.quest.get_streak(&user);
+    assert_eq!((s.weeks, s.best, s.last_week), (2, 2, 14));
+}
+
+#[test]
+fn get_streak_is_zero_for_a_player_who_never_completed() {
+    let f = setup();
+    set_time(&f, WEEK_SECS * 40);
+    let s = f.quest.get_streak(&Address::generate(&f.env));
+    assert_eq!((s.weeks, s.best, s.last_week), (0, 0, 0));
+}
+
+#[test]
+fn same_week_completions_do_not_double_count_streak() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    f.quest.create_quest(&1u32, &2u32, &10u64);
+    f.quest.create_quest(&2u32, &2u32, &10u64);
+    f.env.ledger().with_mut(|l| l.timestamp = WEEK_SECS * 5);
+    award(&f, &f.attester_sk, 1, &user);
+    award(&f, &f.attester_sk, 2, &user); // same week
+    assert_eq!(f.quest.get_streak(&user).weeks, 1);
+}
+
+proptest! {
+    // Each case runs up to 50 signed awards in a fresh env, so keep the case count modest.
+    #![proptest_config(ProptestConfig::with_cases(32))]
+
+    /// Invariant: for any sorted sequence of completion weeks (duplicates allowed), the
+    /// on-chain streak matches a reference model exactly — same week = no change, the
+    /// next week = +1, any gap = reset to 1 — and `best` is the running maximum.
+    #[test]
+    fn weekly_streak_matches_reference_model(mut weeks in prop::collection::vec(0u64..1000, 1..50)) {
+        let f = setup();
+        let user = Address::generate(&f.env);
+        weeks.sort_unstable();
+
+        let mut run = 0u32;
+        let mut best = 0u32;
+        let mut prev: Option<u64> = None;
+
+        for (i, &w) in weeks.iter().enumerate() {
+            // A fresh quest per completion: the replay guard is keyed per (quest, recipient).
+            let quest_id = (i as u32) + 1;
+            f.quest.create_quest(&quest_id, &2u32, &10u64);
+            f.env.ledger().with_mut(|l| l.timestamp = w * super::WEEK_SECS);
+            award(&f, &f.attester_sk, quest_id, &user);
+
+            run = match prev {
+                Some(p) if p == w => run,
+                Some(p) if p + 1 == w => run + 1,
+                _ => 1,
+            };
+            best = best.max(run);
+            prev = Some(w);
+
+            let s = f.quest.get_streak(&user);
+            prop_assert_eq!(s.weeks, run);
+            prop_assert_eq!(s.best, best);
+            prop_assert!(s.best >= s.weeks);
+        }
+    }
+
+    /// Invariant: the week bounds are the WEEK_SECS-long, epoch-aligned window that holds
+    /// the ledger time, and they agree with `get_week`.
+    #[test]
+    fn week_bounds_contain_the_ledger_time(timestamp in 0u64..4_000_000_000) {
+        let f = setup();
+        set_time(&f, timestamp);
+        let (start, end) = f.quest.get_week_bounds();
+        prop_assert!(start <= timestamp && timestamp <= end);
+        prop_assert_eq!(end - start, super::WEEK_SECS - 1);
+        prop_assert_eq!(start % super::WEEK_SECS, 0);
+        prop_assert_eq!(start / super::WEEK_SECS, f.quest.get_week());
+    }
+
+    /// Invariant: with no new award, the view reports the run while the read falls in the
+    /// completion week or the week after, and 0 from the next week on — at any second of
+    /// either week. `best` and `last_week` always read as stored.
+    #[test]
+    fn streak_view_lapses_after_one_skipped_week(
+        week in 0u64..1000,
+        award_offset in 0u64..super::WEEK_SECS,
+        weeks_later in 0u64..4,
+        read_offset in 0u64..super::WEEK_SECS,
+    ) {
+        let f = setup();
+        let user = Address::generate(&f.env);
+        f.quest.create_quest(&1u32, &2u32, &10u64);
+        set_time(&f, week * super::WEEK_SECS + award_offset);
+        award(&f, &f.attester_sk, 1, &user);
+
+        set_time(&f, (week + weeks_later) * super::WEEK_SECS + read_offset);
+        let s = f.quest.get_streak(&user);
+        prop_assert_eq!(s.weeks, if weeks_later <= 1 { 1 } else { 0 });
+        prop_assert_eq!(s.best, 1);
+        prop_assert_eq!(s.last_week, week);
+    }
+}
+
+/// Release build of this contract, committed so the upgrade path can be tested without a
+/// wasm build step in CI. Refresh with `make upgrade-fixtures` after changing the contract.
+const QUEST_WASM: &[u8] = include_bytes!("../testdata/alvinmunk_quest_registry.wasm");
+
+#[test]
+fn upgrade_to_identical_wasm_preserves_quests_and_attester_keys() {
+    let f = setup();
+    f.quest.create_quest(&1u32, &2u32, &50u64);
+    f.quest.create_quest(&2u32, &2u32, &50u64);
+    f.quest.set_attester_budget(&f.attester_pub, &60u64);
+    award(&f, &f.attester_sk, 2, &Address::generate(&f.env));
+
+    let hash = f.env.deployer().upload_contract_wasm(QUEST_WASM);
+    f.quest.upgrade(&hash);
+
+    // The quest config and the allowlisted attester key survived: the upgraded contract
+    // still verifies the signed payload and credits Earned XP through Reputation.
+    let user = Address::generate(&f.env);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 1, &user),
+        Err(Error::AttesterBudgetExceeded)
+    );
+    // So did the budget and today's usage.
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 50);
+    f.quest.set_attester_budget(&f.attester_pub, &0u64);
+    award(&f, &f.attester_sk, 1, &user);
+    assert_eq!(f.rep.get_earned(&user), 50);
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn non_admin_upgrade_reverts() {
+    let env = Env::default();
+    let admin = Address::generate(&env);
+    let rep = Address::generate(&env);
+    let id = env.register(QuestRegistryContract, ());
+    let client = QuestRegistryContractClient::new(&env, &id);
+    client.init(&admin, &rep);
+    let hash = soroban_sdk::BytesN::from_array(&env, &[1; 32]);
+    client.upgrade(&hash);
+}
+
+// --- Storage TTLs ---
+
+/// Live `state_archival` settings from `stellar network settings` (checked 2026-09-28):
+/// (min_persistent_ttl, min_temporary_ttl, max_entry_ttl).
+const TESTNET_TTLS: (u32, u32, u32) = (120_960, 720, 3_110_400);
+const MAINNET_TTLS: (u32, u32, u32) = (2_073_600, 17_280, 3_110_400);
+
+/// `setup()` on a ledger with the given network TTL limits, set before registration so the
+/// instances get the same TTLs as on the network.
+fn setup_with_ttls((min_persistent, min_temp, max_ttl): (u32, u32, u32)) -> Fixture<'static> {
+    let env = Env::default();
+    env.ledger().with_mut(|l| {
+        l.sequence_number = 1_000;
+        l.min_persistent_entry_ttl = min_persistent;
+        l.min_temp_entry_ttl = min_temp;
+        l.max_entry_ttl = max_ttl;
+    });
+    setup_in(env)
+}
+
+fn ttl(f: &Fixture, key: &DataKey) -> u32 {
+    f.env.as_contract(&f.quest.address, || {
+        f.env.storage().persistent().get_ttl(key)
+    })
+}
+
+#[test]
+fn writes_extend_quest_entries_to_bump_extend() {
+    for ttls in [TESTNET_TTLS, MAINNET_TTLS] {
+        let f = setup_with_ttls(ttls);
+        let user = Address::generate(&f.env);
+        f.quest.create_quest(&1u32, &2u32, &50u64);
+        assert_eq!(ttl(&f, &DataKey::Quest(1)), BUMP_EXTEND);
+
+        award(&f, &f.attester_sk, 1, &user);
+        assert_eq!(ttl(&f, &DataKey::Claimed(1, user.clone())), BUMP_EXTEND);
+        assert_eq!(ttl(&f, &DataKey::Streak(user.clone())), BUMP_EXTEND);
+
+        f.quest.set_attester_budget(&f.attester_pub, &1_000u64);
+        assert_eq!(
+            ttl(&f, &DataKey::AttesterBudget(f.attester_pub.clone())),
+            BUMP_EXTEND
+        );
+
+        // Days later, toggling the quest and a second award top their entries back up.
+        f.env.ledger().with_mut(|l| {
+            l.sequence_number += DAY_LEDGERS * 3;
+            l.timestamp += WEEK_SECS;
+        });
+        f.quest.set_quest_active(&1u32, &true);
+        f.quest.create_quest(&2u32, &2u32, &10u64);
+        award(&f, &f.attester_sk, 2, &user);
+        assert_eq!(ttl(&f, &DataKey::Quest(1)), BUMP_EXTEND);
+        assert_eq!(ttl(&f, &DataKey::Streak(user.clone())), BUMP_EXTEND);
+        // The first replay guard was not written again, so it kept ageing.
+        assert_eq!(
+            ttl(&f, &DataKey::Claimed(1, user)),
+            BUMP_EXTEND - DAY_LEDGERS * 3
+        );
+    }
+}
+
+// --- Daily attester budget ---
+
+const DAY: u64 = 86_400;
+
+/// Quests 1-6 worth `xps[i]` XP each, and the in-house key capped at `budget` a day.
+fn setup_budget(budget: u64, xps: &[u64]) -> Fixture<'static> {
+    let f = setup();
+    for (i, xp) in xps.iter().enumerate() {
+        f.quest.create_quest(&(i as u32 + 1), &2u32, xp);
+    }
+    f.quest.set_attester_budget(&f.attester_pub, &budget);
+    f
+}
+
+/// The `att_key/<kind>` events the last invocation emitted, as (key, a, b).
+fn att_key_events(f: &Fixture, kind: &str) -> std::vec::Vec<(BytesN<32>, u64, u64)> {
+    let env = &f.env;
+    let want = soroban_sdk::vec![
+        env,
+        symbol_short!("att_key").into_val(env),
+        Symbol::new(env, kind).into_val(env),
+    ];
+    let mut out = std::vec::Vec::new();
+    for (contract, topics, data) in env.events().all().iter() {
+        if contract != f.quest.address || topics != want {
+            continue;
+        }
+        if kind == "budget" {
+            let (key, budget) = <(BytesN<32>, u64)>::try_from_val(env, &data).unwrap();
+            out.push((key, budget, 0));
+        } else {
+            out.push(<(BytesN<32>, u64, u64)>::try_from_val(env, &data).unwrap());
+        }
+    }
+    out
+}
+
+fn usage_entry(f: &Fixture, day: u64) -> Option<u64> {
+    f.env.as_contract(&f.quest.address, || {
+        f.env
+            .storage()
+            .temporary()
+            .get(&DataKey::AttesterUsed(f.attester_pub.clone(), day))
+    })
+}
+
+#[test]
+fn error_codes_are_append_only() {
+    assert_eq!(Error::NotInitialized as u32, 1);
+    assert_eq!(Error::AlreadyInitialized as u32, 2);
+    assert_eq!(Error::NotAuthorized as u32, 3);
+    assert_eq!(Error::QuestNotFound as u32, 4);
+    assert_eq!(Error::AlreadyClaimed as u32, 5);
+    assert_eq!(Error::QuestInactive as u32, 6);
+    assert_eq!(Error::AttesterBudgetExceeded as u32, 7);
+}
+
+#[test]
+fn unbudgeted_key_is_unlimited_and_untracked() {
+    let f = setup();
+    let user = Address::generate(&f.env);
+    for id in 1..=5u32 {
+        f.quest.create_quest(&id, &2u32, &1_000_000u64);
+        award(&f, &f.attester_sk, id, &user);
+        assert!(att_key_events(&f, "near_cap").is_empty());
+    }
+    assert_eq!(f.rep.get_earned(&user), 5_000_000);
+    assert_eq!(
+        f.quest.get_attester_usage(&f.attester_pub),
+        AttesterUsage {
+            budget: 0,
+            used: 0,
+            day: 0
+        }
+    );
+    // No usage counter is written for a key without a budget.
+    assert_eq!(usage_entry(&f, 0), None);
+}
+
+#[test]
+fn awards_within_budget_then_reject_past_it() {
+    let f = setup_budget(100, &[30, 50, 20, 10, 1]);
+    let (a, b) = (Address::generate(&f.env), Address::generate(&f.env));
+    award(&f, &f.attester_sk, 1, &a);
+    award(&f, &f.attester_sk, 2, &a);
+    award(&f, &f.attester_sk, 3, &b); // exactly the budget
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 100);
+
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 4, &a),
+        Err(Error::AttesterBudgetExceeded)
+    );
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 5, &b),
+        Err(Error::AttesterBudgetExceeded)
+    );
+    assert_eq!(f.rep.get_earned(&a), 80);
+    assert_eq!(f.rep.get_earned(&b), 20);
+    assert_eq!(
+        f.quest.get_attester_usage(&f.attester_pub),
+        AttesterUsage {
+            budget: 100,
+            used: 100,
+            day: 0
+        }
+    );
+}
+
+#[test]
+fn a_single_award_larger_than_the_budget_reverts() {
+    let f = setup_budget(40, &[50]);
+    let user = Address::generate(&f.env);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 1, &user),
+        Err(Error::AttesterBudgetExceeded)
+    );
+    assert_eq!(f.rep.get_earned(&user), 0);
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 0);
+}
+
+#[test]
+fn budget_resets_at_utc_midnight() {
+    let f = setup_budget(100, &[100, 50, 50]);
+    let (a, b) = (Address::generate(&f.env), Address::generate(&f.env));
+    let day = 20_000u64; // 2024-10-04
+    set_time(&f, day * DAY);
+    award(&f, &f.attester_sk, 1, &a);
+
+    // Still the same day at 23:59:59 — the budget is spent.
+    set_time(&f, day * DAY + DAY - 1);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &b),
+        Err(Error::AttesterBudgetExceeded)
+    );
+
+    // 00:00:00 the next day: a fresh budget, counted under the new day.
+    set_time(&f, (day + 1) * DAY);
+    award(&f, &f.attester_sk, 2, &b);
+    assert_eq!(
+        f.quest.get_attester_usage(&f.attester_pub),
+        AttesterUsage {
+            budget: 100,
+            used: 50,
+            day: day + 1
+        }
+    );
+    // The rejected award claimed nothing, so it went through today.
+    assert_eq!(f.rep.get_earned(&b), 50);
+    award(&f, &f.attester_sk, 3, &a);
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 100);
+    assert_eq!(usage_entry(&f, day), Some(100));
+}
+
+#[test]
+fn near_cap_fires_once_when_usage_reaches_80_percent() {
+    let f = setup_budget(100, &[40, 39, 1, 10, 10]);
+    let user = Address::generate(&f.env);
+    let key = f.attester_pub.clone();
+
+    award(&f, &f.attester_sk, 1, &user); // 40%
+    assert!(att_key_events(&f, "near_cap").is_empty());
+    award(&f, &f.attester_sk, 2, &user); // 79%
+    assert!(att_key_events(&f, "near_cap").is_empty());
+    award(&f, &f.attester_sk, 3, &user); // 80%: crosses
+    assert_eq!(att_key_events(&f, "near_cap"), [(key.clone(), 80, 100)]);
+    award(&f, &f.attester_sk, 4, &user); // 90%: already past
+    assert!(att_key_events(&f, "near_cap").is_empty());
+
+    // A new day starts below the threshold again.
+    set_time(&f, DAY);
+    f.quest.create_quest(&7u32, &2u32, &85u64);
+    award(&f, &f.attester_sk, 7, &user);
+    assert_eq!(att_key_events(&f, "near_cap"), [(key, 85, 100)]);
+}
+
+#[test]
+fn set_attester_budget_announces_and_zero_removes_the_cap() {
+    let f = setup_budget(10, &[50]);
+    assert_eq!(
+        att_key_events(&f, "budget"),
+        [(f.attester_pub.clone(), 10, 0)]
+    );
+    let user = Address::generate(&f.env);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 1, &user),
+        Err(Error::AttesterBudgetExceeded)
+    );
+
+    f.quest.set_attester_budget(&f.attester_pub, &0u64);
+    assert_eq!(
+        att_key_events(&f, "budget"),
+        [(f.attester_pub.clone(), 0, 0)]
+    );
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).budget, 0);
+    f.env.as_contract(&f.quest.address, || {
+        assert!(!f
+            .env
+            .storage()
+            .persistent()
+            .has(&DataKey::AttesterBudget(f.attester_pub.clone())));
+    });
+    award(&f, &f.attester_sk, 1, &user);
+    assert_eq!(f.rep.get_earned(&user), 50);
+}
+
+#[test]
+fn budgets_are_per_key() {
+    let f = setup_budget(50, &[50, 50]);
+    let second = signing_key(8);
+    f.quest.add_attester_key(&pub_key(&f, &second));
+    let (a, b) = (Address::generate(&f.env), Address::generate(&f.env));
+    award(&f, &f.attester_sk, 1, &a);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &a),
+        Err(Error::AttesterBudgetExceeded)
+    );
+    // The unbudgeted second key is unaffected by the first key's exhausted budget.
+    award(&f, &second, 1, &b);
+    award(&f, &second, 2, &b);
+    assert_eq!(f.rep.get_earned(&b), 100);
+    assert_eq!(f.quest.get_attester_usage(&pub_key(&f, &second)).used, 0);
+}
+
+#[test]
+fn existing_errors_keep_precedence_over_the_budget() {
+    let f = setup_budget(50, &[50, 10]);
+    let user = Address::generate(&f.env);
+    award(&f, &f.attester_sk, 1, &user);
+    // An exhausted key replaying a claim still gets AlreadyClaimed (#5).
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 1, &user),
+        Err(Error::AlreadyClaimed)
+    );
+    f.quest.set_quest_active(&2u32, &false);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &user),
+        Err(Error::QuestInactive)
+    );
+
+    // A budget alone authorizes nothing: an un-allowlisted key is still NotAuthorized (#3),
+    // and a removed key's budget comes back with it.
+    let outsider = signing_key(9);
+    f.quest
+        .set_attester_budget(&pub_key(&f, &outsider), &1_000u64);
+    assert_eq!(
+        try_award(&f, &outsider, 1, &Address::generate(&f.env)),
+        Err(Error::NotAuthorized)
+    );
+    f.quest.remove_attester_key(&f.attester_pub);
+    f.quest.add_attester_key(&f.attester_pub);
+    f.quest.set_quest_active(&2u32, &true);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &user),
+        Err(Error::AttesterBudgetExceeded)
+    );
+}
+
+#[test]
+fn usage_outlives_testnets_short_temporary_ttl() {
+    let f = setup_with_ttls(TESTNET_TTLS);
+    f.quest.create_quest(&1u32, &2u32, &60u64);
+    f.quest.create_quest(&2u32, &2u32, &60u64);
+    f.quest.set_attester_budget(&f.attester_pub, &100u64);
+    let day = f.env.ledger().timestamp() / DAY;
+    award(&f, &f.attester_sk, 1, &Address::generate(&f.env));
+    let used_key = DataKey::AttesterUsed(f.attester_pub.clone(), day);
+    let entry_ttl = f.env.as_contract(&f.quest.address, || {
+        f.env.storage().temporary().get_ttl(&used_key)
+    });
+    assert_eq!(entry_ttl, USAGE_TTL);
+
+    // ~23h later (well past the 720-ledger minimum), the day's usage still counts.
+    f.env.ledger().with_mut(|l| {
+        l.sequence_number += DAY_LEDGERS - 720;
+        l.timestamp += DAY - 3_600;
+    });
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &Address::generate(&f.env)),
+        Err(Error::AttesterBudgetExceeded)
+    );
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn non_admin_set_attester_budget_reverts() {
+    let env = Env::default();
+    let id = env.register(QuestRegistryContract, ());
+    let client = QuestRegistryContractClient::new(&env, &id);
+    client.init(&Address::generate(&env), &Address::generate(&env));
+    client.set_attester_budget(&BytesN::from_array(&env, &[1; 32]), &100u64);
+}
+
+proptest! {
+    #![proptest_config(ProptestConfig::with_cases(24))]
+
+    /// Invariant: within one day, an award goes through exactly when it fits in what is
+    /// left of the budget, so the XP a key mints never exceeds it.
+    #[test]
+    fn budget_never_overspends(budget in 1u64..500, xps in prop::collection::vec(0u64..200, 1..12)) {
+        let f = setup();
+        f.quest.set_attester_budget(&f.attester_pub, &budget);
+        let user = Address::generate(&f.env);
+        let mut used = 0u64;
+        for (i, &xp) in xps.iter().enumerate() {
+            let quest_id = i as u32 + 1;
+            f.quest.create_quest(&quest_id, &2u32, &xp);
+            let fits = used + xp <= budget;
+            let res = try_award(&f, &f.attester_sk, quest_id, &user);
+            if fits {
+                prop_assert_eq!(res, Ok(()));
+                used += xp;
+            } else {
+                prop_assert_eq!(res, Err(Error::AttesterBudgetExceeded));
+            }
+        }
+        prop_assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, used);
+        prop_assert_eq!(f.rep.get_earned(&user), used);
+        prop_assert!(used <= budget);
+    }
+}
