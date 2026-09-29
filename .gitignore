@@ -15,8 +15,6 @@ contracts/target/
 .stellar/
 
 # env & secrets — NEVER commit attester keys
-.env
-.env.local
 .env.*.local
 *.pem
 *.key
@@ -39,3 +37,4 @@ apps/web/test-results/
 # Soroban auto-generated test snapshots (regenerable)
 contracts/*/test_snapshots/
 .idea
+config.bat
