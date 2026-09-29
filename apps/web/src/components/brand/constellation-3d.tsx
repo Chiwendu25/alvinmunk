@@ -24,8 +24,8 @@ import {
   OrbitRing,
   useGlow,
   fibonacciSphere,
-  reducedMotion,
   useFrameloop,
+  usePrefersReducedMotion,
 } from './constellation-parts';
 
 const RADIUS = 3.0;
@@ -161,7 +161,7 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
   // A read failure must NOT look like an empty sky — they mean opposite things.
   const [loadFailed, setLoadFailed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const reduced = reducedMotion();
+  const reduced = usePrefersReducedMotion();
   const frameloop = useFrameloop(containerRef, reduced);
 
   useEffect(() => {
