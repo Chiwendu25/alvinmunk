@@ -7,7 +7,7 @@
  * drifting particles + a parallaxing starfield react to the cursor). Loaded client-only
  * via dynamic(ssr:false). Shared 3D bits live in constellation-parts.
  */
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Stars, Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
@@ -153,6 +153,8 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
   const [hoverId, setHoverId] = useState<number | null>(null);
   // A read failure must NOT look like an empty sky — they mean opposite things.
   const [loadFailed, setLoadFailed] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(true);
   const reduced = reducedMotion();
 
   useEffect(() => {
@@ -181,6 +183,22 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
     };
   }, [address]);
 
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: '100px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const invalidateRef = useRef<(() => void) | null>(null);
+  const invalidate = useCallback(() => {
+    invalidateRef.current?.();
+  }, []);
+
   // The copy counts everyone who vouched you, not just the stars the window can draw — and
   // never fewer than the stars actually on screen.
   const shown = vouchers?.length ?? 0;
@@ -194,13 +212,15 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
       <div className="aurora absolute inset-0" />
       <div className="grid-faint absolute inset-0" />
 
-      <div className="relative h-[64vh] max-h-[620px] min-h-[440px] w-full">
+      <div ref={containerRef} className="relative h-[64vh] max-h-[620px] min-h-[440px] w-full">
         <Canvas
           camera={{ position: [0, 0, 7.6], fov: 50 }}
           dpr={[1, 2]}
           gl={{ alpha: true, antialias: true }}
+          frameloop={reduced ? 'demand' : visible ? 'always' : 'never'}
           style={{ background: 'transparent' }}
         >
+          <InvalidateBridge invalidateRef={invalidateRef} />
           <Scene
             vouchers={vouchers ?? []}
             reduced={reduced}
@@ -245,7 +265,7 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
         )}
 
         {selected && (
-          <div className="pointer-events-auto absolute bottom-5 right-5 max-w-[16rem] rounded-2xl glass p-3.5 sm:bottom-7 sm:right-7">
+          <div className="pointer-events-auto absolute bottom-5 right-5 max-w-[16rem] rounded-2xl glass p-3.5 sm:bottom-7 sm:right-7" onPointerEnter={invalidate}>
             <button
               onClick={() => setSelected(null)}
               className="absolute right-2 top-2 text-xs text-muted-foreground hover:text-foreground"
@@ -269,4 +289,15 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
       </div>
     </section>
   );
+}
+
+function InvalidateBridge({ invalidateRef }: { invalidateRef: React.MutableRefObject<(() => void) | null> }) {
+  const { invalidate } = useThree();
+  useEffect(() => {
+    invalidateRef.current = invalidate;
+    return () => {
+      invalidateRef.current = null;
+    };
+  }, [invalidate, invalidateRef]);
+  return null;
 }

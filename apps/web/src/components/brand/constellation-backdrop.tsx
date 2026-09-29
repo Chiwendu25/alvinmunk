@@ -94,14 +94,33 @@ function Scene({ reduced }: { reduced: boolean }) {
 
 export default function ConstellationBackdrop() {
   const reduced = reducedMotion();
+  const wrapRef = useRef<HTMLDivExtendsHTMLElement>(null);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) setVisible(e.isIntersecting);
+      },
+      { threshold: 0 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <Canvas
-      camera={{ position: [0, 0, 8.4], fov: 52 }}
-      dpr={[1, 2]}
-      gl={{ alpha: true, antialias: true }}
-      style={{ background: 'transparent' }}
-    >
-      <Scene reduced={reduced} />
-    </Canvas>
+    <div ref={wrapRef} style={{ width: '100%', height: '100%' }}>
+      <Canvas
+        camera={{ position: [0, 0, 8.4], fov: 52 }}
+        dpr={[1, 1.5]}
+        gl={{ alpha: true, antialias: true }}
+        style={{ background: 'transparent' }}
+        frameloop={visible ? 'always' : 'never'}
+      >
+        <Scene reduced={reduced} />
+      </Canvas>
+    </div>
   );
 }

@@ -1,9 +1,8 @@
 'use client';
 
 /**
- * Shared 3D constellation primitives (R3F / three.js) used by the app hero
- * (constellation-3d) and the marketing backdrop (constellation-backdrop): the glow
- * sprite texture, a sphere-distribution helper, a glowing Star, and a live OrbitRing.
+ * Shared 3D constellation primitives (RFF / three.js) used by the app hero
+ * (constellation-3d) and the marketing backdrop (constellation-backdrop): the glow sprite texture, a sphere-distribution helper, a glowing Star, and a live OrbitRing.
  * Additive-blended glow, no postprocessing dependency.
  */
 import { useMemo, useRef } from 'react';
