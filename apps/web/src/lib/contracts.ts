@@ -96,6 +96,26 @@ export async function readPublic<T>(
 }
 
 /**
+ * Attester daily Earned-XP budget helpers. A budget of 0 means unlimited, so
+ * existing keys keep working without a migration. Usage is tracked per
+ * (attester key, day) in temporary storage on the quest registry.
+ */
+export async function getAttesterUsage(
+  key: string,
+  sourceAccount: string,
+): Promise<{ used: bigint; budget: bigint } | undefined> {
+  return readContract(questId(), 'get_attester_usage', [args.addr(key)], sourceAccount);
+}
+
+export async function setAttesterBudget(
+  admin: Wallet,
+  key: string,
+  budget: number | bigint,
+): Promise<void> {
+  await invokeAndWait(questId(), 'set_attester_budget', [args.addr(key), args.u64(budget)], admin);
+}
+
+/**
  * State-changing call: prepare (simulate+assemble), sign via the wallet, submit,
  * then poll until the tx lands. Returns the decoded return value (or undefined).
  */

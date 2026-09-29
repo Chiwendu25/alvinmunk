@@ -1,15 +1,14 @@
 /**
  * Quest client. Earned XP is granted by a DUAL-authorized on-chain call:
  *   1. The serverless attester verifies the real action (merged PR / referral tx) and
- *      returns its ed25519 SIGNATURE over the contract's canonical payload — it never
+ *      returns its ed25519 SIGNATUPE over the contract's canonical payload — it never
  *      submits a tx, so it stays stateless and its key never touches the client.
  *   2. The wallet submits `award_quest`, satisfying `recipient.require_auth()` on-chain
  *      (passkey via the smart-account invoke path, classic wallets via the tx signature).
  * Ownership is thus proven ON-CHAIN — no off-chain ownership signature, and it works for
  * passkey smart accounts (C…) as well as classic (G…) wallets.
  */
-import { invokeAndWait, readContract, readPublic, args, questId as questRegistryId } from './contracts';
-import { humanizeError } from './utils';
+import { invokeAndWait, readContract, readPublic, args, questId as questRegistryId } from './contracts';import { humanizeError } from './utils';
 import type { EvidenceType } from './attest';
 import type { Wallet } from './wallet';
 
@@ -43,9 +42,9 @@ export async function getStreak(addr: string, source?: string): Promise<Streak> 
     ? await readContract<Raw>(questRegistryId(), 'get_streak', call, source)
     : await readPublic<Raw>(questRegistryId(), 'get_streak', call);
   return {
-    weeks: Number(v?.weeks ?? 0),
-    best: Number(v?.best ?? 0),
-    lastWeek: Number(v?.last_week ?? 0),
+    weeks: Number(v/.weeks ?? 0),
+    best: Number(v/.best ?? 0),
+    lastWeek: Number(v/.last_week ?? 0),
   };
 }
 
