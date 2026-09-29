@@ -7,8 +7,8 @@
  * drifting particles + a parallaxing starfield react to the cursor). Loaded client-only
  * via dynamic(ssr:false). Shared 3D bits live in constellation-parts.
  */
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useCallback, useEffect, useMemo, useRef, useState, type MutableRefObject } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Stars, Html, Line } from '@react-three/drei';
 import * as THREE from 'three';
 import { shortAddr } from '@alvinmunk/shared';
@@ -19,7 +19,14 @@ import {
   addrHue,
   type VoucherStar,
 } from '@/lib/constellation';
-import { Star, OrbitRing, useGlow, fibonacciSphere, reducedMotion } from './constellation-parts';
+import {
+  Star,
+  OrbitRing,
+  useGlow,
+  fibonacciSphere,
+  reducedMotion,
+  useFrameloop,
+} from './constellation-parts';
 
 const RADIUS = 3.0;
 
@@ -154,8 +161,8 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
   // A read failure must NOT look like an empty sky — they mean opposite things.
   const [loadFailed, setLoadFailed] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(true);
   const reduced = reducedMotion();
+  const frameloop = useFrameloop(containerRef, reduced);
 
   useEffect(() => {
     let alive = true;
@@ -183,17 +190,6 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
     };
   }, [address]);
 
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(
-      ([entry]) => setVisible(entry.isIntersecting),
-      { rootMargin: '100px' },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
-
   const invalidateRef = useRef<(() => void) | null>(null);
   const invalidate = useCallback(() => {
     invalidateRef.current?.();
@@ -217,7 +213,7 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
           camera={{ position: [0, 0, 7.6], fov: 50 }}
           dpr={[1, 2]}
           gl={{ alpha: true, antialias: true }}
-          frameloop={reduced ? 'demand' : visible ? 'always' : 'never'}
+          frameloop={frameloop}
           style={{ background: 'transparent' }}
         >
           <InvalidateBridge invalidateRef={invalidateRef} />
@@ -291,7 +287,7 @@ export default function ConstellationHero3D({ address, handle }: { address: stri
   );
 }
 
-function InvalidateBridge({ invalidateRef }: { invalidateRef: React.MutableRefObject<(() => void) | null> }) {
+function InvalidateBridge({ invalidateRef }: { invalidateRef: MutableRefObject<(() => void) | null> }) {
   const { invalidate } = useThree();
   useEffect(() => {
     invalidateRef.current = invalidate;

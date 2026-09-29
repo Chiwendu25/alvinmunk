@@ -1,11 +1,12 @@
 'use client';
 
 /**
- * Shared 3D constellation primitives (RFF / three.js) used by the app hero
- * (constellation-3d) and the marketing backdrop (constellation-backdrop): the glow sprite texture, a sphere-distribution helper, a glowing Star, and a live OrbitRing.
+ * Shared 3D constellation primitives (R3F / three.js) used by the app hero
+ * (constellation-3d) and the marketing backdrop (constellation-backdrop): the glow
+ * sprite texture, a sphere-distribution helper, a glowing Star, and a live OrbitRing.
  * Additive-blended glow, no postprocessing dependency.
  */
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -178,4 +179,47 @@ export function reducedMotion(): boolean {
     typeof window !== 'undefined' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
+}
+
+/**
+ * Shared offscreen-pausing logic for both constellation canvases: observes `containerRef`
+ * with an `IntersectionObserver` and also tracks tab visibility (`document.hidden`), so a
+ * canvas stops issuing WebGL frames both when scrolled out of view AND when the tab is
+ * backgrounded. Reduced-motion users get `'demand'` (render once, then only on explicit
+ * `invalidate()` calls) instead of the visibility-driven `'always'`/`'never'` toggle, since
+ * their scenes are meant to stay static regardless of scroll position.
+ *
+ * SSR-safe: `IntersectionObserver`/`document` are only touched inside effects, which never
+ * run during server rendering, and the effect itself no-ops when `IntersectionObserver` is
+ * unavailable (leaving the canvas rendering normally rather than freezing it forever).
+ */
+export function useFrameloop(
+  containerRef: RefObject<HTMLElement | null>,
+  reduced: boolean,
+): 'always' | 'demand' | 'never' {
+  const [intersecting, setIntersecting] = useState(true);
+  const [tabVisible, setTabVisible] = useState(
+    () => typeof document === 'undefined' || !document.hidden,
+  );
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(
+      ([entry]) => setIntersecting(entry.isIntersecting),
+      { rootMargin: '100px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [containerRef]);
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const onVisibilityChange = () => setTabVisible(!document.hidden);
+    document.addEventListener('visibilitychange', onVisibilityChange);
+    return () => document.removeEventListener('visibilitychange', onVisibilityChange);
+  }, []);
+
+  if (reduced) return 'demand';
+  return intersecting && tabVisible ? 'always' : 'never';
 }

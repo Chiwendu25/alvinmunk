@@ -9,7 +9,14 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Stars, Line } from '@react-three/drei';
 import * as THREE from 'three';
-import { Star, OrbitRing, useGlow, fibonacciSphere, reducedMotion } from './constellation-parts';
+import {
+  Star,
+  OrbitRing,
+  useGlow,
+  fibonacciSphere,
+  reducedMotion,
+  useFrameloop,
+} from './constellation-parts';
 
 const HUES = [265, 157, 193, 280, 200, 157, 265, 40, 193, 270, 157, 265];
 
@@ -94,21 +101,8 @@ function Scene({ reduced }: { reduced: boolean }) {
 
 export default function ConstellationBackdrop() {
   const reduced = reducedMotion();
-  const wrapRef = useRef<HTMLDivExtendsHTMLElement>(null);
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    const el = wrapRef.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) setVisible(e.isIntersecting);
-      },
-      { threshold: 0 },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, []);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const frameloop = useFrameloop(wrapRef, reduced);
 
   return (
     <div ref={wrapRef} style={{ width: '100%', height: '100%' }}>
@@ -117,7 +111,7 @@ export default function ConstellationBackdrop() {
         dpr={[1, 1.5]}
         gl={{ alpha: true, antialias: true }}
         style={{ background: 'transparent' }}
-        frameloop={visible ? 'always' : 'never'}
+        frameloop={frameloop}
       >
         <Scene reduced={reduced} />
       </Canvas>
