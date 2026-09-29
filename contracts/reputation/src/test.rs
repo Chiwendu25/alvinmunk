@@ -207,6 +207,41 @@ fn daily_cap_reverts_on_overuse() {
     client.mint_vouch(&alice, &h, &String::from_str(&env, "spam")); // panics: DailyCapReached
 }
 
+/// The cap counts per voucher per UTC calendar day (`timestamp / DAY_SECS`), not over a
+/// rolling 24 hours: a full day's mints at 23:59:59 and another full day's at 00:00:00 are
+/// both allowed (issue #133).
+#[test]
+fn daily_cap_resets_at_utc_boundary() {
+    let (env, client, _admin) = setup();
+    let alice = Address::generate(&env);
+    let bob = Address::generate(&env);
+    let carol = Address::generate(&env);
+    let (_s, h) = secret_and_hash(&env, 99);
+    let spam = String::from_str(&env, "spam");
+
+    // Last second of day 0: Alice uses her whole allowance (each claim refunds her stake).
+    env.ledger().with_mut(|l| l.timestamp = DAY_SECS - 1);
+    for i in 0..MAX_VOUCH_PER_DAY {
+        vouch(&env, &client, &alice, &bob, i as u8);
+    }
+    assert_eq!(
+        client.try_mint_vouch(&alice, &h, &spam),
+        Err(Ok(contract_err(Error::DailyCapReached)))
+    );
+    // Caps are per voucher: Carol still mints while Alice is capped.
+    vouch(&env, &client, &carol, &bob, 100);
+
+    // First second of day 1: Alice has a whole new allowance, and it is capped again.
+    env.ledger().with_mut(|l| l.timestamp = DAY_SECS);
+    for i in 0..MAX_VOUCH_PER_DAY {
+        vouch(&env, &client, &alice, &bob, 200 + i as u8);
+    }
+    assert_eq!(
+        client.try_mint_vouch(&alice, &h, &spam),
+        Err(Ok(contract_err(Error::DailyCapReached)))
+    );
+}
+
 #[test]
 fn starter_social_granted_once() {
     let (env, client, _admin) = setup();
@@ -275,6 +310,76 @@ fn expire_vouch_before_ttl_reverts() {
     let (_s, h) = secret_and_hash(&env, 7);
     let id = client.mint_vouch(&alice, &h, &String::from_str(&env, "x"));
     client.expire_vouch(&id); // now=0 < TTL -> NotExpired
+}
+
+/// `claim_vouch` (refund) and `expire_vouch` (slash) share one deadline, `created +
+/// VOUCH_TTL_SECS` inclusive: at it a claim still refunds and nothing can be slashed, one
+/// second later a claim refunds nothing and the card can be slashed (issue #128).
+#[test]
+fn claim_and_expire_agree_on_the_deadline() {
+    let (env, client, _admin) = setup();
+    let alice = Address::generate(&env);
+    let bob = Address::generate(&env);
+    let carol = Address::generate(&env);
+    let (s1, h1) = secret_and_hash(&env, 1);
+    let (s2, h2) = secret_and_hash(&env, 2);
+    let (_s3, h3) = secret_and_hash(&env, 3);
+    let created = 1_000u64;
+    env.ledger().with_mut(|l| l.timestamp = created);
+    let on_time = client.mint_vouch(&alice, &h1, &String::from_str(&env, "a"));
+    let late = client.mint_vouch(&alice, &h2, &String::from_str(&env, "b"));
+    let unclaimed = client.mint_vouch(&alice, &h3, &String::from_str(&env, "c"));
+    assert_eq!(client.get_score(&alice), STARTER_SOCIAL - 3 * VOUCH_STAKE);
+
+    env.ledger()
+        .with_mut(|l| l.timestamp = created + VOUCH_TTL_SECS);
+    assert_eq!(
+        client.try_expire_vouch(&unclaimed),
+        Err(Ok(contract_err(Error::NotExpired)))
+    );
+    client.claim_vouch(&bob, &on_time, &s1);
+    assert_eq!(
+        client.get_score(&alice),
+        STARTER_SOCIAL - 2 * VOUCH_STAKE,
+        "a claim at the deadline refunds"
+    );
+
+    env.ledger()
+        .with_mut(|l| l.timestamp = created + VOUCH_TTL_SECS + 1);
+    client.claim_vouch(&carol, &late, &s2);
+    assert_eq!(
+        client.get_score(&alice),
+        STARTER_SOCIAL - 2 * VOUCH_STAKE,
+        "a claim past the deadline refunds nothing"
+    );
+    client.expire_vouch(&unclaimed);
+    assert!(client.get_vouch(&unclaimed).unwrap().slashed);
+}
+
+/// The deadline saturates instead of overflowing: a card minted within `VOUCH_TTL_SECS` of
+/// `u64::MAX` still claims (with its refund), and can never be expired (issue #128).
+#[test]
+fn claim_deadline_saturates_at_the_end_of_time() {
+    let (env, client, _admin) = setup();
+    let alice = Address::generate(&env);
+    let bob = Address::generate(&env);
+    let (s1, h1) = secret_and_hash(&env, 1);
+    let (_s2, h2) = secret_and_hash(&env, 2);
+    env.ledger().with_mut(|l| l.timestamp = u64::MAX - 1);
+    let claimed = client.mint_vouch(&alice, &h1, &String::from_str(&env, "a"));
+    let unclaimed = client.mint_vouch(&alice, &h2, &String::from_str(&env, "b"));
+
+    // `created + VOUCH_TTL_SECS` would overflow here; the refund check must not trap.
+    client.claim_vouch(&bob, &claimed, &s1);
+    assert_eq!(client.get_score(&alice), STARTER_SOCIAL - VOUCH_STAKE);
+
+    // No ledger time passes a deadline pinned at u64::MAX.
+    env.ledger().with_mut(|l| l.timestamp = u64::MAX);
+    assert_eq!(
+        client.try_expire_vouch(&unclaimed),
+        Err(Ok(contract_err(Error::NotExpired)))
+    );
+    assert!(!client.get_vouch(&unclaimed).unwrap().slashed);
 }
 
 #[test]

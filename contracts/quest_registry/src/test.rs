@@ -12,7 +12,7 @@ use soroban_sdk::{
         storage::{Persistent as _, Temporary as _},
         Address as _, Events as _, Ledger as _,
     },
-    BytesN, Env, TryFromVal,
+    vec, BytesN, Env, TryFromVal,
 };
 
 struct Fixture<'a> {
@@ -432,26 +432,40 @@ const QUEST_WASM: &[u8] = include_bytes!("../testdata/alvinmunk_quest_registry.w
 #[test]
 fn upgrade_to_identical_wasm_preserves_quests_and_attester_keys() {
     let f = setup();
-    f.quest.create_quest(&1u32, &2u32, &50u64);
-    f.quest.create_quest(&2u32, &2u32, &50u64);
+    for id in 1..=3u32 {
+        f.quest.create_quest(&id, &2u32, &50u64);
+    }
+    let partner = signing_key(42);
+    f.quest.set_quest_attester(&2u32, &pub_key(&f, &partner));
     f.quest.set_attester_budget(&f.attester_pub, &60u64);
-    award(&f, &f.attester_sk, 2, &Address::generate(&f.env));
+    award(&f, &f.attester_sk, 3, &Address::generate(&f.env));
 
     let hash = f.env.deployer().upload_contract_wasm(QUEST_WASM);
     f.quest.upgrade(&hash);
 
-    // The quest config and the allowlisted attester key survived: the upgraded contract
-    // still verifies the signed payload and credits Earned XP through Reputation.
+    // The budget and today's usage survived: 50 of 60 is spent, so a 50 XP award reverts.
     let user = Address::generate(&f.env);
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 50);
     assert_eq!(
         try_award(&f, &f.attester_sk, 1, &user),
         Err(Error::AttesterBudgetExceeded)
     );
-    // So did the budget and today's usage.
-    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 50);
+    // The quest config and the allowlisted attester key survived: the upgraded contract
+    // still verifies the signed payload and credits Earned XP through Reputation.
     f.quest.set_attester_budget(&f.attester_pub, &0u64);
     award(&f, &f.attester_sk, 1, &user);
     assert_eq!(f.rep.get_earned(&user), 50);
+    // So did the quest binding: quest 2 still takes only the partner key.
+    assert_eq!(
+        f.quest.get_quest_attester(&2u32),
+        Some(pub_key(&f, &partner))
+    );
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &user),
+        Err(Error::NotAuthorized)
+    );
+    award(&f, &partner, 2, &user);
+    assert_eq!(f.rep.get_earned(&user), 100);
 }
 
 #[test]
@@ -505,6 +519,11 @@ fn writes_extend_quest_entries_to_bump_extend() {
         assert_eq!(ttl(&f, &DataKey::Claimed(1, user.clone())), BUMP_EXTEND);
         assert_eq!(ttl(&f, &DataKey::Streak(user.clone())), BUMP_EXTEND);
 
+        f.quest.create_quest(&9u32, &2u32, &10u64);
+        f.quest
+            .set_quest_attester(&9u32, &pub_key(&f, &signing_key(42)));
+        assert_eq!(ttl(&f, &DataKey::QuestAttester(9)), BUMP_EXTEND);
+
         f.quest.set_attester_budget(&f.attester_pub, &1_000u64);
         assert_eq!(
             ttl(&f, &DataKey::AttesterBudget(f.attester_pub.clone())),
@@ -527,6 +546,192 @@ fn writes_extend_quest_entries_to_bump_extend() {
             BUMP_EXTEND - DAY_LEDGERS * 3
         );
     }
+}
+
+// --- Quest-scoped attester keys ---
+
+/// Quests 1-3 (50 XP each); a partner key bound to quest 1 and another to quest 3. Quest 2
+/// stays unbound. The in-house key (`f.attester_sk`) is the only globally allowlisted one.
+fn setup_scoped() -> (Fixture<'static>, SigningKey, SigningKey) {
+    let f = setup();
+    for id in 1..=3u32 {
+        f.quest.create_quest(&id, &2u32, &50u64);
+    }
+    let partner = signing_key(42);
+    let other = signing_key(43);
+    f.quest.set_quest_attester(&1u32, &pub_key(&f, &partner));
+    f.quest.set_quest_attester(&3u32, &pub_key(&f, &other));
+    (f, partner, other)
+}
+
+#[test]
+fn scoped_key_awards_only_its_quest() {
+    let (f, partner, _) = setup_scoped();
+    let user = Address::generate(&f.env);
+    assert_eq!(
+        f.quest.get_quest_attester(&1u32),
+        Some(pub_key(&f, &partner))
+    );
+
+    try_award(&f, &partner, 1, &user).unwrap();
+    assert_eq!(f.rep.get_earned(&user), 50);
+
+    // Neither an unbound quest nor one bound to another key accepts it (#3 NotAuthorized).
+    assert_eq!(try_award(&f, &partner, 2, &user), Err(Error::NotAuthorized));
+    assert_eq!(try_award(&f, &partner, 3, &user), Err(Error::NotAuthorized));
+    assert_eq!(f.rep.get_earned(&user), 50);
+    assert_eq!(Error::NotAuthorized as u32, 3);
+}
+
+#[test]
+fn bound_quest_rejects_the_global_key() {
+    let (f, partner, _) = setup_scoped();
+    let user = Address::generate(&f.env);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 1, &user),
+        Err(Error::NotAuthorized)
+    );
+    assert_eq!(f.rep.get_earned(&user), 0);
+    // The rejected attempt recorded no claim: the bound key can still award the user.
+    try_award(&f, &partner, 1, &user).unwrap();
+    assert_eq!(f.rep.get_earned(&user), 50);
+}
+
+#[test]
+fn unbound_quest_keeps_the_global_allowlist() {
+    let (f, _, _) = setup_scoped();
+    let user = Address::generate(&f.env);
+    assert_eq!(f.quest.get_quest_attester(&2u32), None);
+    try_award(&f, &f.attester_sk, 2, &user).unwrap();
+    assert_eq!(f.rep.get_earned(&user), 50);
+    // A key outside the allowlist is still refused there.
+    assert_eq!(
+        try_award(&f, &signing_key(99), 2, &Address::generate(&f.env)),
+        Err(Error::NotAuthorized)
+    );
+}
+
+#[test]
+fn cleared_binding_falls_back_to_the_global_allowlist() {
+    let (f, partner, _) = setup_scoped();
+    let user = Address::generate(&f.env);
+    f.quest.clear_quest_attester(&1u32);
+    assert_eq!(
+        f.env.events().all(),
+        vec![
+            &f.env,
+            (
+                f.quest.address.clone(),
+                (symbol_short!("quest"), symbol_short!("att_clear")).into_val(&f.env),
+                (1u32, pub_key(&f, &partner)).into_val(&f.env),
+            )
+        ]
+    );
+    assert_eq!(f.quest.get_quest_attester(&1u32), None);
+
+    assert_eq!(try_award(&f, &partner, 1, &user), Err(Error::NotAuthorized));
+    try_award(&f, &f.attester_sk, 1, &user).unwrap();
+    assert_eq!(f.rep.get_earned(&user), 50);
+
+    // Clearing again is a no-op that announces nothing.
+    f.quest.clear_quest_attester(&1u32);
+    assert_eq!(f.env.events().all(), vec![&f.env]);
+}
+
+#[test]
+fn revoked_global_key_loses_unbound_quests_and_bindings_stay() {
+    let (f, partner, _) = setup_scoped();
+    f.quest.remove_attester_key(&f.attester_pub);
+
+    let user = Address::generate(&f.env);
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &user),
+        Err(Error::NotAuthorized)
+    );
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 1, &user),
+        Err(Error::NotAuthorized)
+    );
+    // The partner binding does not depend on the global allowlist.
+    try_award(&f, &partner, 1, &user).unwrap();
+    assert_eq!(f.rep.get_earned(&user), 50);
+
+    // Revoking a key from the allowlist leaves its quest bindings in place.
+    f.quest.add_attester_key(&pub_key(&f, &partner));
+    f.quest.remove_attester_key(&pub_key(&f, &partner));
+    assert_eq!(
+        f.quest.get_quest_attester(&1u32),
+        Some(pub_key(&f, &partner))
+    );
+}
+
+#[test]
+fn rebinding_replaces_the_previous_key() {
+    let (f, partner, other) = setup_scoped();
+    f.quest.set_quest_attester(&1u32, &pub_key(&f, &other));
+    assert_eq!(
+        f.env.events().all(),
+        vec![
+            &f.env,
+            (
+                f.quest.address.clone(),
+                (symbol_short!("quest"), symbol_short!("att_bind")).into_val(&f.env),
+                (1u32, pub_key(&f, &other)).into_val(&f.env),
+            )
+        ]
+    );
+    let user = Address::generate(&f.env);
+    assert_eq!(try_award(&f, &partner, 1, &user), Err(Error::NotAuthorized));
+    try_award(&f, &other, 1, &user).unwrap();
+    assert_eq!(f.rep.get_earned(&user), 50);
+}
+
+#[test]
+fn binding_an_unknown_quest_reverts() {
+    let f = setup();
+    assert_eq!(
+        f.quest
+            .try_set_quest_attester(&7u32, &pub_key(&f, &signing_key(42))),
+        Err(Ok(Error::QuestNotFound.into()))
+    );
+    assert_eq!(Error::QuestNotFound as u32, 4);
+    assert_eq!(f.quest.get_quest_attester(&7u32), None);
+}
+
+#[test]
+fn binding_keeps_the_replay_guard_and_inactive_check() {
+    let (f, partner, _) = setup_scoped();
+    let user = Address::generate(&f.env);
+    try_award(&f, &partner, 1, &user).unwrap();
+    assert_eq!(
+        try_award(&f, &partner, 1, &user),
+        Err(Error::AlreadyClaimed)
+    );
+    f.quest.set_quest_active(&1u32, &false);
+    assert_eq!(
+        try_award(&f, &partner, 1, &Address::generate(&f.env)),
+        Err(Error::QuestInactive)
+    );
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn non_admin_set_quest_attester_reverts() {
+    let env = Env::default();
+    let id = env.register(QuestRegistryContract, ());
+    let client = QuestRegistryContractClient::new(&env, &id);
+    client.init(&Address::generate(&env), &Address::generate(&env));
+    client.set_quest_attester(&1u32, &BytesN::from_array(&env, &[1; 32]));
+}
+
+#[test]
+#[should_panic(expected = "HostError: Error(Auth, InvalidAction)")]
+fn non_admin_clear_quest_attester_reverts() {
+    let env = Env::default();
+    let id = env.register(QuestRegistryContract, ());
+    let client = QuestRegistryContractClient::new(&env, &id);
+    client.init(&Address::generate(&env), &Address::generate(&env));
+    client.clear_quest_attester(&1u32);
 }
 
 // --- Daily attester budget ---
@@ -809,6 +1014,36 @@ fn usage_outlives_testnets_short_temporary_ttl() {
         try_award(&f, &f.attester_sk, 2, &Address::generate(&f.env)),
         Err(Error::AttesterBudgetExceeded)
     );
+}
+
+#[test]
+fn a_quest_bound_key_is_budgeted_too() {
+    let f = setup_budget(0, &[50, 50]);
+    let partner = signing_key(42);
+    f.quest.set_quest_attester(&1u32, &pub_key(&f, &partner));
+    f.quest.set_quest_attester(&2u32, &pub_key(&f, &partner));
+    f.quest.set_attester_budget(&pub_key(&f, &partner), &50u64);
+    let user = Address::generate(&f.env);
+    award(&f, &partner, 1, &user);
+    // The partner's budget is spent, and the scope still keeps the global key out.
+    assert_eq!(
+        try_award(&f, &partner, 2, &user),
+        Err(Error::AttesterBudgetExceeded)
+    );
+    assert_eq!(
+        try_award(&f, &f.attester_sk, 2, &user),
+        Err(Error::NotAuthorized)
+    );
+    assert_eq!(
+        f.quest.get_attester_usage(&pub_key(&f, &partner)),
+        AttesterUsage {
+            budget: 50,
+            used: 50,
+            day: 0
+        }
+    );
+    // The global key's own (unset) budget is untouched.
+    assert_eq!(f.quest.get_attester_usage(&f.attester_pub).used, 0);
 }
 
 #[test]
