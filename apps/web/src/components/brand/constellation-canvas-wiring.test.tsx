@@ -66,6 +66,12 @@ describe('canvas frameloop wiring', () => {
   let container: HTMLDivElement;
   let root: Root;
   let originalIntersectionObserver: unknown;
+  // usePrefersReducedMotion subscribes to changes, so the stub needs the listener API too.
+  const mediaQuery = (matches: boolean) => ({
+    matches,
+    addEventListener: vi.fn(),
+    removeEventListener: vi.fn(),
+  });
   let matchMediaMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
@@ -79,7 +85,7 @@ describe('canvas frameloop wiring', () => {
     (globalThis as { IntersectionObserver?: unknown }).IntersectionObserver =
       MockIntersectionObserver;
 
-    matchMediaMock = vi.fn().mockReturnValue({ matches: false });
+    matchMediaMock = vi.fn().mockReturnValue(mediaQuery(false));
     vi.stubGlobal('matchMedia', matchMediaMock);
 
     fetchVouchersOfMock.mockResolvedValue([]);
@@ -117,7 +123,7 @@ describe('canvas frameloop wiring', () => {
   });
 
   it('ConstellationHero3D uses frameloop="demand" when prefers-reduced-motion is set', () => {
-    matchMediaMock.mockReturnValue({ matches: true });
+    matchMediaMock.mockReturnValue(mediaQuery(true));
     act(() => {
       root.render(<ConstellationHero3D address={'G'.padEnd(56, 'B')} handle="bob" />);
     });
@@ -143,7 +149,7 @@ describe('canvas frameloop wiring', () => {
   });
 
   it('ConstellationBackdrop uses frameloop="demand" when prefers-reduced-motion is set', () => {
-    matchMediaMock.mockReturnValue({ matches: true });
+    matchMediaMock.mockReturnValue(mediaQuery(true));
     act(() => {
       root.render(<ConstellationBackdrop />);
     });
