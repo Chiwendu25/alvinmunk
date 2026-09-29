@@ -1,0 +1,21 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "feat/issue-155-daily-earned-xp-budget-per-attester-key-so-a",
+    "fix/issue-235-both-three-js-canvases-keep-rendering-at-full",
+    "main",
+    "origin"
+  ],
+  "parent": {
+    "feat/issue-155-daily-earned-xp-budget-per-attester-key-so-a": "main",
+    "fix/issue-235-both-three-js-canvases-keep-rendering-at-full": "main",
+    "main": null,
+    "origin": "main"
+  },
+  "order": [
+    "main",
+    "feat/issue-155-daily-earned-xp-budget-per-attester-key-so-a",
+    "fix/issue-235-both-three-js-canvases-keep-rendering-at-full",
+    "origin"
+  ]
+}
